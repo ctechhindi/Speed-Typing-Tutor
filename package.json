@@ -1,0 +1,68 @@
+{
+  "name": "speed-typing-tutor",
+  "version": "0.0.1",
+  "productName": "Speed Typing Tutor",
+  "description": "English and Hindi (Inscript) Typing Tutor, Learn and Typing Test",
+  "author": {
+    "name": "Jeevan Lal",
+    "email": "ctechhindi@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ctechhindi/Speed-Typing-Tutor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ctechhindi/Speed-Typing-Tutor/issues"
+  },
+  "homepage": "https://easytyping.netlify.com",
+  "date": "Mon Dec 24 2018 21:03:31 GMT+0530",
+  "license": "MIT",
+  "copyright": "KingWeb, Inc.",
+  "keywords": [
+    "electron",
+    "vue",
+    "Typing-Tutor",
+    "Hindi-Typing-Tutor",
+    "English-Typing-Tutor"
+  ],
+  "private": false,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "electron:build": "vue-cli-service electron:build",
+    "electron:serve": "vue-cli-service electron:serve",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "@xkeshi/vue-countdown": "^1.0.1",
+    "buefy": "^0.7.1",
+    "jquery": "^3.3.1",
+    "js-base64": "^2.5.0",
+    "mdi": "^2.2.43",
+    "register-service-worker": "^1.5.2",
+    "update-electron-app": "^1.3.0",
+    "vue": "^2.5.21",
+    "vue-progressbar": "^0.7.5",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "electron": "^4.0.0",
+    "@vue/cli-plugin-babel": "^3.2.0",
+    "@vue/cli-plugin-pwa": "^3.2.0",
+    "@vue/cli-service": "^3.2.0",
+    "vue-cli-plugin-electron-builder": "^1.0.0-rc.9",
+    "vue-template-compiler": "^2.5.17"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
+  "main": "background.js"
+}
