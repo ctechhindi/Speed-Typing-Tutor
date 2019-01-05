@@ -64,7 +64,7 @@ export default {
       // here goes the core code for displaying the contents got from the array;
       var lesson = document.getElementById("lesson");
       var newDiv = document.createElement("div");
-      newDiv.setAttribute("id", "englishWords");
+      newDiv.setAttribute("id", this.typingContentDivClass);
       lesson.appendChild(newDiv);
 
       var splitOneWord = this.typingContent.split(" ");
@@ -196,7 +196,7 @@ export default {
     /**
      * Run Function if input text in Typing Area
      */
-    keyDownEventFunction(e,v) {
+    keyDownEventFunction(e) {
       var that = this;
 
       var key = e.key; // keyboard key
@@ -213,17 +213,17 @@ export default {
       ) {
         // Scroll Down Typing Content
         var scrollTo = $(
-          "#englishWords span:nth-child(" +
+          "#" + this.typingContentDivClass + " span:nth-child(" +
           (this.result.typingWordIndex + 1) +
           ")"
         );
         var scrollToValue =
           scrollTo.offset().top -
-          $("#englishWords").offset().top +
-          $("#englishWords").scrollTop();
+          $("#" + this.typingContentDivClass).offset().top +
+          $("#" + this.typingContentDivClass).scrollTop();
 
         if (scrollToValue !== this.checkOldScrollValue) {
-          $("#englishWords").animate({
+          $("#" + this.typingContentDivClass).animate({
             scrollTop: scrollToValue
           });
           this.checkOldScrollValue = scrollToValue;
@@ -247,7 +247,7 @@ export default {
         if (
           (keyValue > 47 && keyValue < 58) ||
           (keyValue > 64 && keyValue < 91) ||
-          (keyValue > 96 && keyValue < 123) ||
+          (keyValue >= 96 && keyValue < 123) ||
           keyValue == 32 ||
           keyValue == 222 ||
           keyValue == 190 ||
@@ -275,9 +275,18 @@ export default {
             }
           }
 
-
           // If Press Space Button [Active Next Word]
           if ((e.keyCode || e.which) == 32) {
+
+            // again check last word status
+            var str = document.getElementById("typingBox").value
+            var strSplit = str.split(" ");
+            var strLastWord = strSplit[strSplit.length - 1];
+            if (this.currentTypingWord === strLastWord) {
+              this.lastWordStatus = "right"; }
+            else {
+              this.lastWordStatus = "wrong"; }
+
             // Check Last Word Status [wrong, right]
             if (this.lastWordStatus === "wrong") {
               this.wrongWordHighlight(this.result.typingWordIndex);
@@ -300,9 +309,10 @@ export default {
             var strSplit = str.split(" ");
             var strLastWord = strSplit[strSplit.length - 1];
 
-            // console.log("Current Word: "+ this.currentTypingWord)
+            // console.log("Current Word: " + this.currentTypingWord)
+            // console.log("Last Word: " + strLastWord)
             // console.log("Typing String: "+ str)
-            
+
             // Check One-by-One Character in Active Word
             this.checkOneByOneChar(key)
 
@@ -312,6 +322,7 @@ export default {
             } else {
               this.lastWordStatus = "wrong";
             }
+            // console.log(this.lastWordStatus);
           }
 
           this.checkNewWord();
@@ -347,13 +358,14 @@ export default {
      * Show Previous, Next, Play Button
      */
     showPreviousNextPlayBtn(active) {
+      var that = this
       if (active === true) {
         $("#typing-content").mouseenter(function () {
           document
             .getElementById("typing-content")
             .setAttribute("style", "background-color: rgba(37, 35, 35, 0.93);");
           document
-            .getElementById("englishWords")
+            .getElementById(that.typingContentDivClass)
             .setAttribute("style", "color: #101010;");
           // document.getElementById("action-new-lesson").setAttribute("style", "display: initial;");
           $("#action-new-lesson").fadeIn();
@@ -361,13 +373,13 @@ export default {
 
         $("#typing-content").mouseleave(function () {
           document.getElementById("typing-content").setAttribute("style", null);
-          document.getElementById("englishWords").setAttribute("style", null);
+          document.getElementById(that.typingContentDivClass).setAttribute("style", null);
           // document.getElementById("action-new-lesson").setAttribute("style", "display: none;");
           $("#action-new-lesson").fadeOut();
         });
       } else {
         document.getElementById("typing-content").setAttribute("style", null);
-        document.getElementById("englishWords").setAttribute("style", null);
+        document.getElementById(that.typingContentDivClass).setAttribute("style", null);
         $("#action-new-lesson").fadeToggle();
       }
     },

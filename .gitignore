@@ -5,6 +5,7 @@ node_modules
 /src/store
 /src/english-passages
 /src/hindi-inscript-passages
+/src/hindi-krutidev-passages
 /README_P.md
 
 # local env files

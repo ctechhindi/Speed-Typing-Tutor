@@ -1,9 +1,9 @@
 <template>
-  <div class="typing-test-english">
+  <div classs="typing-test-krutidev-hindi">
     <section class="hero is-dark" id="typing-content" v-once>
       <div class="hero-body" style="padding: 2rem 1.5rem;">
         <div class="container">
-          <h1 class="title" id="lesson" style="line-height: 1.3;"></h1>
+          <h1 class="title krutidev" id="lesson" style="line-height: 1.3;"></h1>
         </div>
         <div id="action-new-lesson" style="display: none;">
           <nav class="level">
@@ -109,17 +109,48 @@
         </nav>
       </div>
     </section>
+    <!-- Show Word Hint -->
+    <div class="container" v-show="isShowWordHint">
+      <div style="font-size: xx-large; padding-top: 17px;">
+        <b-tooltip label="Word Hint" type="is-info" animated>
+          <b-tag type="is-info" size="is-medium">
+            <b-icon icon="lightbulb-on"></b-icon>
+          </b-tag>
+        </b-tooltip>&nbsp;
+        <strong
+          class="krutidev"
+          style="letter-spacing: 8px;"
+          v-for="w in hintWord"
+          :key="w.index"
+        >
+          <span v-if="w.isUnicodeKey">
+            <b-tooltip
+              :label="'Alt + '+ w.altUnicodeKey"
+              style="letter-spacing: 0px; font-family: cursive;"
+              always
+            >
+              <span
+                class="tag is-danger is-large krutidev"
+                style="margin-right: 8px; padding-left: 7px; padding-right: 7px;"
+              >{{ w.string }}</span>
+            </b-tooltip>
+          </span>
+          <span v-else>{{ w.string }}</span>
+        </strong>
+      </div>
+    </div>
     <!-- Typing Section -->
     <section class="section" v-once>
       <div class="container">
         <div class="field">
           <div class="control">
             <input
-              class="input is-primary is-large"
+              style="font-weight: bold;"
+              class="input is-primary is-large krutidev"
               id="typingBox"
               @keydown="keyDownEventFunction"
               type="text"
-              placeholder="Start Typing.."
+              placeholder="Vkbfix 'kq: djs"
               autocomplete="off"
             >
           </div>
@@ -158,21 +189,24 @@ import { Base64 } from "js-base64";
 import MX_Typing_Test from "../MX_Typing_Test.js";
 
 export default {
-  name: "typing-test-english",
+  name: "typing-test-krutidev-hindi",
   mixins: [MX_Typing_Test],
 
   data() {
     return {
-      typingContentDivClass: "englishWords", // This Class name Using in CSS
-    }
+      hintWord: false,
+      typingContentDivClass: "krutiDevHindiWords", // This Class name Using in CSS
+    };
   },
 
   created() {
     var lid = Base64.decode(this.$route.params.id);
-    if (this.$store.getters["et/hasLesson"](lid)) {
-      this.$Progress.start()
-      this.$store.getters["et/getLesson"](lid).then(module => {
-        var lengthWords = this.$store.state.et.selectedTypingWordsLength;
+    var PType = this.$route.params.passageType;
+    if (this.$store.getters["kdht/hasLesson"](lid, PType)) {
+      this.$Progress.start();
+      this.$store.getters["kdht/getLesson"](lid, PType).then(module => {
+        var lengthWords = this.$store.state.kdht.selectedTypingWordsLength;
+        this.typingContent = module.default.passage;
         if (lengthWords >= 1000) {
           this.typingContent = module.default.passage;
         } else {
@@ -181,7 +215,7 @@ export default {
             .slice(0, -(1000 - lengthWords))
             .join(" ");
         }
-        this.$Progress.finish()
+        this.$Progress.finish();
         this.generateWords();
       });
     }
@@ -189,10 +223,13 @@ export default {
 
   computed: {
     timeDuration() {
-      return this.$store.state.et.selectedTimeDuration;
+      return this.$store.state.kdht.selectedTimeDuration;
     },
     isDisableBackSpace() {
-      return this.$store.state.et.isDisableBackSpace;
+      return this.$store.state.kdht.isDisableBackSpace;
+    },
+    isShowWordHint() {
+      return this.$store.state.kdht.isShowWordHint;
     }
   },
 
@@ -201,13 +238,60 @@ export default {
      * Reload Typing Passage
      */
     reloadTypingPassage() {
-      var tPassage = this.$store.state.et.listEnglishTypingPassages.length;
-      var gNum = Math.floor(Math.random() * (tPassage - 1 + 1)) + 0;
-      var lessonID = this.$store.state.et.listEnglishTypingPassages[gNum].id;
-      this.$router.push({
-        name: "typing-test-english",
-        params: { id: Base64.encode(lessonID) }
-      });
+      var PType = this.$route.params.passageType;
+      if (PType === "basic") {
+        var tPassage = this.$store.state.kdht.listBasicPassages.length;
+        var gNum = Math.floor(Math.random() * (tPassage - 1 + 1)) + 0;
+        var lessonID = this.$store.state.kdht.listBasicPassages[gNum].id;
+        this.$router.push({
+          name: "typing-test-krutidev-hindi",
+          params: { passageType: "basic", id: Base64.encode(lessonID) }
+        });
+      } else {
+        var tPassage = this.$store.state.kdht.listAdvancedPassages.length;
+        var gNum = Math.floor(Math.random() * (tPassage - 1 + 1)) + 0;
+        var lessonID = this.$store.state.kdht.listAdvancedPassages[gNum].id;
+        this.$router.push({
+          name: "typing-test-krutidev-hindi",
+          params: { passageType: "advanced", id: Base64.encode(lessonID) }
+        });
+      }
+    },
+
+    /**
+     * Find Unicode Character in String
+     * @return {array}
+     */
+    findUnicodeCharacter(str) {
+      var returnData = [];
+      for (var i = 0, n = str.length; i < n; i++) {
+        if (/[^\u0000-\u007F]/.test(str[i]) === true) {
+          returnData.push({
+            string: str[i],
+            isUnicodeKey: true,
+            altUnicodeKey: this.$store.getters["findUChar/findUnicodeAltKey"](
+              str[i]
+            )
+          });
+        } else {
+          returnData.push({
+            string: str[i],
+            isUnicodeKey: false,
+            altUnicodeKey: false
+          });
+        }
+      }
+      return returnData;
+    }
+  },
+
+  watch: {
+    currentTypingWord(v) {
+      if (this.isShowWordHint === true) {
+        if (v !== undefined) {
+          this.hintWord = this.findUnicodeCharacter(v);
+        }
+      }
     }
   }
 };
@@ -226,7 +310,7 @@ export default {
 }
 
 /** Typing Content Div */
-#englishWords {
+#krutiDevHindiWords {
   width: 96.4%;
   height: 184px;
   overflow-y: scroll;
@@ -236,17 +320,17 @@ export default {
  * Custom Scrollbar Styling
  * https://codepen.io/devstreak/pen/dMYgeO
  */
-#englishWords::-webkit-scrollbar-track {
+#krutiDevHindiWords::-webkit-scrollbar-track {
   /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
   /* background-color: #f5f5f5; */
   border-radius: 10px;
 }
 
-#englishWords::-webkit-scrollbar {
+#krutiDevHindiWords::-webkit-scrollbar {
   width: 10px;
 }
 
-#englishWords::-webkit-scrollbar-thumb {
+#krutiDevHindiWords::-webkit-scrollbar-thumb {
   background-image: -webkit-gradient(
     linear,
     left bottom,
@@ -255,5 +339,14 @@ export default {
     color-stop(0.72, rgb(73, 125, 189)),
     color-stop(0.86, rgb(28, 58, 148))
   );
+}
+
+@font-face {
+  font-family: "Kruti-Dev";
+  src: url("./../../../assets/fonts/kruti_dev_010.ttf");
+}
+
+.krutidev {
+  font-family: Kruti-Dev;
 }
 </style>

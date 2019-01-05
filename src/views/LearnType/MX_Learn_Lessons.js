@@ -5,6 +5,7 @@ export default {
     return {
       isShowKeyborad: true, // Show and Hide Keyborad
       isCountdownStart: false, // Countdown Start
+      currentTypingChar: "", // Current Typing Character
       result: {
         totalTimeDuration: "free", // Total Typing Duration : Millisecond [60000 = 1M] and "free"
         totalRightChar: 0,
@@ -123,6 +124,7 @@ export default {
     highlightLetter: function (index) {
       if (index < this.typingContent.content.length) {
         var get = document.getElementById("span" + index);
+        this.currentTypingChar = $(get).text();
         get.style.background = this.activeCharStyles.background;
         get.style.color = this.activeCharStyles.color;
         get.style.padding = this.activeCharStyles.padding;

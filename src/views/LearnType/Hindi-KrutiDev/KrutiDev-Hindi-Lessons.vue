@@ -1,11 +1,10 @@
 <template>
-  <div class="inscript-hindi-lessons">
+  <div class="krutidev-hindi-lessons">
     <section class="hero is-warning is-bold">
       <div class="hero-body">
         <div class="container">
-          <h1 class="title">Inscript हिन्दी Typing Lessons</h1>
-          <h2
-            class="subtitle"
+          <h1 class="title">Kruti Dev हिन्दी Typing Lessons</h1>
+          <h2 class="subtitle"
           >Take typing speed test, practice your touch typing skills, learn to type faster and with fewer errors with this free online typing tutor.</h2>
         </div>
       </div>
@@ -58,11 +57,11 @@
                   <div class="card">
                     <header class="card-header" v-bind:class="applyLessonClass('header', index)">
                       <p class="card-header-title">
-                        <router-link class="has-text-white" :to="'/learn/hindi/inscript/'+ encodeString(index)">{{ index }}</router-link>
+                        <router-link class="has-text-white" :to="'/learn/hindi/krutidev/'+ encodeString(index)">{{ index }}</router-link>
                       </p>
                     </header>
                     <div style="padding: 0.8rem;" class="card-content has-text-centered has-text-weight-bold is-size-3" v-bind:class="applyLessonClass('content', index)">
-                      <div class="content">
+                      <div class="content krutidev">
                         {{ shiftLessons.name }}
                         <span v-if="shiftLessons.key">({{ shiftLessons.key }})</span>  
                       </div>
@@ -77,11 +76,11 @@
                   <div class="card">
                     <header class="card-header" v-bind:class="applyLessonClass('header', index)">
                       <p class="card-header-title">
-                        <router-link class="has-text-white" :to="'/learn/hindi/inscript/'+ encodeString(index)">{{ index }}</router-link>
+                        <router-link class="has-text-white" :to="'/learn/hindi/krutidev/'+ encodeString(index)">{{ index }}</router-link>
                       </p>
                     </header>
                     <div style="padding: 0.8rem;" class="card-content has-text-centered has-text-weight-bold is-size-3" v-bind:class="applyLessonClass('content', index)">
-                      <div class="content">
+                      <div class="content krutidev">
                         {{ outShiftLessons.name }}
                         <span v-if="outShiftLessons.key">({{ outShiftLessons.key }})</span>  
                       </div>
@@ -101,7 +100,7 @@
 import { Base64 } from "js-base64";
 
 export default {
-  name: "inscript-hindi-lessons",
+  name: "krutidev-hindi-lessons",
   data() {
     return {
       collapseOpenData: {
@@ -126,28 +125,28 @@ export default {
 
   computed: {
     lessonsList() {
-      return this.$store.state.ihl.lessons;
+      return this.$store.state.kdhl.lessons;
     },
     listLearnLessons() {
-      return this.$store.state.ihl.learnLessons;
+      return this.$store.state.kdhl.learnLessons;
     },
     listTimeDuration() {
-      return this.$store.state.ihl.listTimeDuration;
+      return this.$store.state.kdhl.listTimeDuration;
     },
     selectTimeDuration: {
       get() {
-        return this.$store.state.ihl.selectedTimeDuration;
+        return this.$store.state.kdhl.selectedTimeDuration;
       },
       set(val) {
-        this.$store.commit("ihl/UP_TIME_DURATION", val)
+        this.$store.commit("kdhl/UP_TIME_DURATION", val)
       }
     },
     totalChar: {
       get() {
-        return this.$store.state.ihl.totalCharacters
+        return this.$store.state.kdhl.totalCharacters
       },
       set(val) {
-        this.$store.commit("ihl/UP_TOTAL_CHARACTERS", val)
+        this.$store.commit("kdhl/UP_TOTAL_CHARACTERS", val)
       }
     }
   },
@@ -234,7 +233,7 @@ export default {
   watch: {
     collapseOpenData: {
       handler: function (newObject) {
-        localStorage.setItem("inscript_lessons_collapse", JSON.stringify(newObject))
+        localStorage.setItem("krutidev_lessons_collapse", JSON.stringify(newObject))
       },
       deep: true
     },
@@ -242,9 +241,9 @@ export default {
 
   created() {
     // Fetch Collapse Data in localStorage
-    var inscript_lessons_collapse = localStorage.getItem("inscript_lessons_collapse")
-    if (inscript_lessons_collapse !== null && inscript_lessons_collapse !== undefined) {
-      this.collapseOpenData = JSON.parse(inscript_lessons_collapse)
+    var krutidev_lessons_collapse = localStorage.getItem("krutidev_lessons_collapse")
+    if (krutidev_lessons_collapse !== null && krutidev_lessons_collapse !== undefined) {
+      this.collapseOpenData = JSON.parse(krutidev_lessons_collapse)
     }
   },
 
@@ -254,3 +253,13 @@ export default {
 }
 </script>
 
+<style>
+@font-face {
+  font-family: 'Kruti-Dev'; 
+  src: url('./../../../assets/fonts/kruti_dev_010.ttf'); 
+}
+
+.krutidev {
+  font-family: Kruti-Dev;
+}
+</style>

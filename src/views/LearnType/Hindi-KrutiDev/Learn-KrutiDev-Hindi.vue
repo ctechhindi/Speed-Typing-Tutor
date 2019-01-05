@@ -1,9 +1,9 @@
 <template>
-  <div class="typing-test-english">
-    <section class="hero is-dark" id="typing-content" v-once>
+  <div class="learn-hindi-krutidev-typing">
+    <section class="hero is-primary" id="typing-content">
       <div class="hero-body" style="padding: 2rem 1.5rem;">
         <div class="container">
-          <h1 class="title" id="lesson" style="line-height: 1.3;"></h1>
+          <h1 class="title krutidev" id="lesson"></h1>
         </div>
         <div id="action-new-lesson" style="display: none;">
           <nav class="level">
@@ -16,13 +16,8 @@
             </div>
             <div class="level-item has-text-centered">
               <b-tooltip label="Play Again" type="is-success" animated>
-                <button @click="playAgainTyping" class="button is-medium is-success">
+                <button @click="playAgainLesson" class="button is-medium is-success">
                   <b-icon size="is-medium" icon="play"></b-icon>
-                </button>
-              </b-tooltip>&nbsp; &nbsp; &nbsp;
-              <b-tooltip label="Reload Passage" type="is-primary" animated>
-                <button @click="reloadTypingPassage" class="button is-medium is-primary">
-                  <b-icon size="is-medium" icon="reload"></b-icon>
                 </button>
               </b-tooltip>
             </div>
@@ -37,7 +32,6 @@
         </div>
       </div>
     </section>
-    <!-- Result Section -->
     <section id="resultShow" class="hero is-warning">
       <div class="hero-body" style="padding: 1rem 0.5rem;">
         <nav class="level">
@@ -55,20 +49,20 @@
           </div>
           <div class="level-item has-text-centered">
             <div title="Accuracy">
-              <p class="heading">ACCURACY ({{ result.totalWrongWords }})</p>
+              <p class="heading">ACCURACY ({{ result.totalWrongChar }})</p>
               <p class="title">{{ result.Accuracy }} %</p>
             </div>
           </div>
           <div class="level-item has-text-centered">
             <div title="Total Character">
-              <p class="heading">Total Character</p>
-              <p class="title">{{ result.totalChar }}</p>
+              <p class="heading">Total Character ({{ result.totalChar }})</p>
+              <p class="title">{{ result.totalTypeChar }}</p>
             </div>
           </div>
           <div class="level-item has-text-centered">
             <div title="Total Words">
-              <p class="heading">Total Words ({{ result.totalWords }})</p>
-              <p class="title">{{ result.typingWordIndex }}</p>
+              <p class="heading">Total Words</p>
+              <p class="title">{{ result.totalWords }}</p>
             </div>
           </div>
           <!-- Countdown -->
@@ -109,23 +103,11 @@
         </nav>
       </div>
     </section>
-    <!-- Typing Section -->
-    <section class="section" v-once>
-      <div class="container">
-        <div class="field">
-          <div class="control">
-            <input
-              class="input is-primary is-large"
-              id="typingBox"
-              @keydown="keyDownEventFunction"
-              type="text"
-              placeholder="Start Typing.."
-              autocomplete="off"
-            >
-          </div>
-        </div>
-      </div>
-    </section>
+    <br>
+    <!-- Keyborad -->
+    <div class="container">
+      <keyborad-krutidev-hindi v-show="isShowKeyborad" :key-name="currentTypingChar"/>
+    </div>
     <!-- Settings Model -->
     <b-modal :active.sync="isSettingsModalActive" :width="640" scroll="keep">
       <div class="card">
@@ -135,10 +117,12 @@
         <div class="card-content">
           <section>
             <div class="field">
-              <b-switch v-model="isShowOnlyOneWord">Only Show Single Word in Typing Box</b-switch>
+              <b-switch v-model="isShowKeyborad">Show/Hide Keyboard</b-switch>
             </div>
             <div class="field">
-              <b-switch v-model="isCheckOneByOneChar">Check One-by-One Character in Word</b-switch>
+              <b-switch
+                v-model="isByPassWrongKey"
+              >ByPass Worng Typing Character (Stop cursor on error)</b-switch>
             </div>
           </section>
         </div>
@@ -155,60 +139,73 @@ Vue.component(VueCountdown.name, VueCountdown);
 
 import { Base64 } from "js-base64";
 
-import MX_Typing_Test from "../MX_Typing_Test.js";
+import store from "../../../store.js";
+
+// Buefy Toast Component
+import { Toast } from "buefy/dist/components/toast";
+
+// Load Kruti Dev Hindi Keyboard Component
+import KeyboradKrutiDevHindi from "@/components/Keyborad-KrutiDev-Hindi.vue";
+
+import MX_Learn_Lessons from "../MX_Learn_Lessons.js";
 
 export default {
-  name: "typing-test-english",
-  mixins: [MX_Typing_Test],
-
-  data() {
-    return {
-      typingContentDivClass: "englishWords", // This Class name Using in CSS
-    }
+  name: "learn-hindi-krutidev-typing",
+  mixins: [MX_Learn_Lessons],
+  components: {
+    "keyborad-krutidev-hindi": KeyboradKrutiDevHindi
   },
 
-  created() {
-    var lid = Base64.decode(this.$route.params.id);
-    if (this.$store.getters["et/hasLesson"](lid)) {
-      this.$Progress.start()
-      this.$store.getters["et/getLesson"](lid).then(module => {
-        var lengthWords = this.$store.state.et.selectedTypingWordsLength;
-        if (lengthWords >= 1000) {
-          this.typingContent = module.default.passage;
-        } else {
-          this.typingContent = module.default.passage
-            .split(" ")
-            .slice(0, -(1000 - lengthWords))
-            .join(" ");
+  beforeRouteEnter(to, from, next) {
+    if (to.params.id != undefined) {
+      if (store.state.kdhl.lessons !== undefined) {
+        var isExistKey = store.state.kdhl.lessons[Base64.decode(to.params.id)];
+        if (typeof isExistKey !== "undefined") {
+          return next();
         }
-        this.$Progress.finish()
-        this.generateWords();
-      });
+      }
     }
+    Toast.open({
+      message: "URL Error : Invalid URL Parameter",
+      position: "is-bottom",
+      type: "is-danger"
+    });
+    return next("/");
+  },
+
+  beforeRouteLeave(to, from, next) {
+    document.removeEventListener("keydown", this.keyDownEventFunction);
+    next();
   },
 
   computed: {
-    timeDuration() {
-      return this.$store.state.et.selectedTimeDuration;
+    typingContent() {
+      var isExistKey =
+        store.state.kdhl.lessons[Base64.decode(this.$route.params.id)];
+      if (typeof isExistKey !== "undefined") {
+        return isExistKey;
+      }
+      return false;
     },
-    isDisableBackSpace() {
-      return this.$store.state.et.isDisableBackSpace;
+    timeDuration() {
+      return store.state.kdhl.selectedTimeDuration;
     }
   },
 
   methods: {
     /**
-     * Reload Typing Passage
+     * Generate New Typing Content
      */
-    reloadTypingPassage() {
-      var tPassage = this.$store.state.et.listEnglishTypingPassages.length;
-      var gNum = Math.floor(Math.random() * (tPassage - 1 + 1)) + 0;
-      var lessonID = this.$store.state.et.listEnglishTypingPassages[gNum].id;
-      this.$router.push({
-        name: "typing-test-english",
-        params: { id: Base64.encode(lessonID) }
+    genTypingContent() {
+      this.$store.dispatch("kdhl/generateTypingContent", {
+        lesson: Base64.decode(this.$route.params.id),
+        strChar: this.typingContent.name.replace(/ /g, "")
       });
     }
+  },
+
+  mounted() {
+    this.$Progress.finish()
   }
 };
 </script>
@@ -226,27 +223,28 @@ export default {
 }
 
 /** Typing Content Div */
-#englishWords {
+#thisClass {
   width: 96.4%;
-  height: 184px;
+  height: 113px;
   overflow-y: scroll;
+  letter-spacing: 2px;
 }
 
 /**
  * Custom Scrollbar Styling
  * https://codepen.io/devstreak/pen/dMYgeO
  */
-#englishWords::-webkit-scrollbar-track {
+#thisClass::-webkit-scrollbar-track {
   /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
   /* background-color: #f5f5f5; */
   border-radius: 10px;
 }
 
-#englishWords::-webkit-scrollbar {
+#thisClass::-webkit-scrollbar {
   width: 10px;
 }
 
-#englishWords::-webkit-scrollbar-thumb {
+#thisClass::-webkit-scrollbar-thumb {
   background-image: -webkit-gradient(
     linear,
     left bottom,
@@ -255,5 +253,15 @@ export default {
     color-stop(0.72, rgb(73, 125, 189)),
     color-stop(0.86, rgb(28, 58, 148))
   );
+}
+
+/* Kruti Dev Font */
+@font-face {
+  font-family: 'Kruti-Dev'; 
+  src: url('./../../../assets/fonts/kruti_dev_010.ttf'); 
+}
+
+.krutidev {
+  font-family: Kruti-Dev;
 }
 </style>

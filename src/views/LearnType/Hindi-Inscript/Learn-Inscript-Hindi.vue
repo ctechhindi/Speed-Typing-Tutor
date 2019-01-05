@@ -106,7 +106,7 @@
     <br>
     <!-- Keyborad -->
     <div class="container">
-      <keyborad-inscript-english v-show="isShowKeyborad"/>
+      <keyborad-inscript-hindi v-show="isShowKeyborad" :key-name="currentTypingChar"/>
     </div>
     <!-- Settings Model -->
     <b-modal :active.sync="isSettingsModalActive" :width="640" scroll="keep">
@@ -153,7 +153,7 @@ export default {
   name: "learn-hindi-inscript-typing",
   mixins: [MX_Learn_Lessons],
   components: {
-    "keyborad-inscript-english": KeyboradInscriptHindi
+    "keyborad-inscript-hindi": KeyboradInscriptHindi
   },
 
   beforeRouteEnter(to, from, next) {

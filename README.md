@@ -1,6 +1,6 @@
 # [Speed Typing Tutor](https://speedtyping.netlify.com/#/)
 
-Free Online Hindi (Inscript, Kruti Dev) and English Typing Tutor
+To Use Hindi (Inscript, Kruti Dev) and English Typing and Test, Download the Application or use online
 
 [![npm version](https://img.shields.io/badge/npm-5.6.0-blue.svg)](https://github.com/ctechhindi/Speed-Typing-Tutor)
 [![electron version](https://img.shields.io/badge/electron-4.0.0-blue.svg)](https://electronjs.org)
@@ -24,6 +24,7 @@ Free Online Hindi (Inscript, Kruti Dev) and English Typing Tutor
 - [Countdown](https://github.com/xkeshi/vue-countdown)
 - [jQuery](https://www.npmjs.com/package/jquery)
 - [Vue-progressbar](http://hilongjw.github.io/vue-progressbar/index.html) 
+- [axios](https://www.npmjs.com/package/axios)
 
 ## Electron
 

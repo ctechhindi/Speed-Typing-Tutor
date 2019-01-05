@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, ipcMain, dialog, globalShortcut } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain, dialog, globalShortcut, ipcRenderer } from 'electron'
 import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-builder/lib'
 
 const APPP = require('../package.json') // Load Package JSON File
@@ -143,8 +143,35 @@ ipcMain.on('toggle-welcome-win', (event, arg) => {
   const options = {
     type: 'info',
     title: 'Welcome',
-    message: APPP.productName,
-    detail: "Version: " + APPP.version + "\nDate: " + APPP.date,
+    message: APPP.productName + " " + APPP.version,
+    detail: "To Use Hindi (Inscript, Kruti Dev) and English Typing and Test, Download the Application or use online",
   }
   dialog.showMessageBox(options, function () { })
+})
+
+/**
+ * Show Welcome Menu (open-updates-win)
+ */
+ipcMain.on('open-updates-win', (event, arg) => {
+  if (arg === "alreadyUpdate") {
+    const options = {
+      type: 'error',
+      title: APPP.productName + ' is up to date',
+      detail: "There is no update to the application right now. ♥ Enjoy",
+    }
+    dialog.showMessageBox(options, function () {})
+
+  } else {
+    const options = {
+      type: 'info',
+      title: 'A new version available',
+      message: "v"+ arg,
+      detail: "A new version available. Click the button below to download the latest version.",
+      buttons: ['Download New Version'],
+      cancelId: 1
+    }
+    dialog.showMessageBox(options, function (index) {
+      event.sender.send('updates-dialog-selection', index)
+    })
+  }
 })

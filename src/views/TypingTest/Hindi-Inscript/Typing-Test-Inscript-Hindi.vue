@@ -3,7 +3,7 @@
     <section class="hero is-dark" id="typing-content" v-once>
       <div class="hero-body" style="padding: 2rem 1.5rem;">
         <div class="container">
-          <h1 class="title" id="lesson" style="line-height: 1.3;"></h1>
+          <h1 class="title" id="lesson" style="line-height: 1.6; font-size: 27px;"></h1>
         </div>
         <div id="action-new-lesson" style="display: none;">
           <nav class="level">
@@ -110,29 +110,50 @@
         </nav>
       </div>
     </section>
+    <!-- Show Word Hint -->
     <div class="container" v-show="isShowWordHint">
-      <div style="font-size: xx-large; padding-top: 17px;" class="">
-        <b-tooltip label="Word Hint" type="is-danger" animated>
-          <b-tag type="is-danger" size="is-medium">
+      <div style="font-size: xx-large; padding-top: 17px;">
+        <b-tooltip label="Word Hint" type="is-info" animated>
+          <b-tag type="is-info" size="is-medium">
             <b-icon icon="lightbulb-on"></b-icon>
           </b-tag>
-        </b-tooltip>
-        &nbsp;
-        <strong v-for="w in hintWord" :key="w.index">{{ w }}&nbsp;</strong>
+        </b-tooltip>&nbsp;
+        <strong
+          style="letter-spacing: 8px;"
+          v-for="w in hintWord"
+          :key="w.index"
+        >
+          <span v-if="w.isUnicodeKey">
+            <b-tooltip
+              :label="'Alt + '+ w.altUnicodeKey"
+              style="letter-spacing: 0px; font-family: cursive;"
+              always
+            >
+              <span
+                class="tag is-danger is-large"
+                style="margin-right: 8px; padding-left: 7px; padding-right: 7px;"
+              >{{ w.string }}</span>
+            </b-tooltip>
+          </span>
+          <span v-else>{{ w.string }}</span>
+        </strong>
       </div>
     </div>
     <!-- Typing Section -->
     <section class="section" v-once>
       <div class="container">
-        <b-field>
-          <b-input
-            autocomplete="off"
-            id="typingBox"
-            @keydown.native="keyDownEventFunction"
-            placeholder="Start Typing.."
-            size="is-large"
-          ></b-input>
-        </b-field>
+        <div class="field">
+          <div class="control">
+            <input
+              class="input is-primary is-large"
+              id="typingBox"
+              @keydown="keyDownEventFunction"
+              type="text"
+              placeholder="Start Typing.."
+              autocomplete="off"
+            >
+          </div>
+        </div>
       </div>
     </section>
     <!-- Settings Model -->
@@ -172,7 +193,8 @@ export default {
 
   data() {
     return {
-      hintWord: [],
+      hintWord: false,
+      typingContentDivClass: "inscriptHindiWords", // This Class name Using in CSS
     }
   },
 
@@ -235,13 +257,38 @@ export default {
         });
       }
     },
+
+    /**
+     * Find Unicode Character in String
+     * @return {array}
+     */
+    findUnicodeCharacter(str) {
+      var returnData = [];
+      for (var i = 0, n = str.length; i < n; i++) {
+        var out = this.$store.getters["findUChar/findInscriptAltKey"](str[i])
+        if (out === false) {
+          returnData.push({
+            string: str[i],
+            isUnicodeKey: false,
+            altUnicodeKey: false
+          });
+        } else {
+          returnData.push({
+            string: str[i],
+            isUnicodeKey: true,
+            altUnicodeKey: out
+          });
+        }
+      }
+      return returnData;
+    }
   },
 
   watch:{
     currentTypingWord(v) {
       if (this.isShowWordHint === true) {
         if (v !== undefined) {
-          this.hintWord = v.split("")
+          this.hintWord = this.findUnicodeCharacter(v);
         }
       }
     }
@@ -262,7 +309,7 @@ export default {
 }
 
 /** Typing Content Div */
-#englishWords {
+#inscriptHindiWords {
   width: 96.4%;
   height: 184px;
   overflow-y: scroll;
@@ -272,17 +319,17 @@ export default {
  * Custom Scrollbar Styling
  * https://codepen.io/devstreak/pen/dMYgeO
  */
-#englishWords::-webkit-scrollbar-track {
+#inscriptHindiWords::-webkit-scrollbar-track {
   /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
   /* background-color: #f5f5f5; */
   border-radius: 10px;
 }
 
-#englishWords::-webkit-scrollbar {
+#inscriptHindiWords::-webkit-scrollbar {
   width: 10px;
 }
 
-#englishWords::-webkit-scrollbar-thumb {
+#inscriptHindiWords::-webkit-scrollbar-thumb {
   background-image: -webkit-gradient(
     linear,
     left bottom,

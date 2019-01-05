@@ -1,9 +1,9 @@
 <template>
-  <div class="hindi-inscript-test-settings">
+  <div class="hindi-krutidev-test-settings">
     <section class="hero is-bold is-success">
       <div class="hero-body">
         <div class="container">
-          <h1 class="title">Choice Inscript हिन्दी Typing Content</h1>
+          <h1 class="title">Choice Kruti Dev हिन्दी Typing Content</h1>
           <h2
             class="subtitle"
           >Take typing speed test, practice your touch typing skills, learn to type faster and with fewer errors with this free online typing tutor.</h2>
@@ -106,7 +106,7 @@
 import { Base64 } from "js-base64";
 
 export default {
-  name: "hindi-inscript-test-settings",
+  name: "hindi-krutidev-test-settings",
   data() {
     return {};
   },
@@ -114,64 +114,65 @@ export default {
     // Passage Type
     selectPassageType: {
       get() {
-        return this.$store.state.iht.passageType;
+        return this.$store.state.kdht.passageType;
       },
       set(val) {
-        this.$store.commit("iht/UP_PASSAGE_TYPE", val);
+        this.$store.commit("kdht/UP_PASSAGE_TYPE", val);
       }
     },
 
     // Selected Typing Passage
     selectedTypingPassage: {
       get() {
-        return this.$store.state.iht.selectTypingPassage;
+        return this.$store.state.kdht.selectTypingPassage;
       },
       set(val) {
-        this.$store.commit("iht/UP_SELECTED_TYPING_PASSAGE", val);
+        this.$store.commit("kdht/UP_SELECTED_TYPING_PASSAGE", val);
       }
     },
+
     listBasicPassages() {
-      return this.$store.state.iht.listBasicPassages;
+      return this.$store.state.kdht.listBasicPassages;
     },
     listAdvancedPassages() {
-      return this.$store.state.iht.listAdvancedPassages;
+      return this.$store.state.kdht.listAdvancedPassages;
     },
     allTimeDuration() {
-      return this.$store.state.iht.allTimeDuration;
+      return this.$store.state.kdht.allTimeDuration;
     },
     selectTimeDuration: {
       get() {
-        return this.$store.state.iht.selectedTimeDuration;
+        return this.$store.state.kdht.selectedTimeDuration;
       },
       set(val) {
-        this.$store.commit("iht/UP_TIME_DURATION", val);
+        this.$store.commit("kdht/UP_TIME_DURATION", val);
       }
     },
     allTypingWordsLength() {
-      return this.$store.state.iht.allTypingWordsLength;
+      return this.$store.state.kdht.allTypingWordsLength;
     },
     selectTypingWordsLength: {
       get() {
-        return this.$store.state.iht.selectedTypingWordsLength;
+        return this.$store.state.kdht.selectedTypingWordsLength;
       },
       set(val) {
-        this.$store.commit("iht/UP_TYPING_WORDS_LENGTH", val);
+        this.$store.commit("kdht/UP_TYPING_WORDS_LENGTH", val);
       }
     },
     isDisableBackSpace: {
       get() {
-        return this.$store.state.iht.isDisableBackSpace;
+        return this.$store.state.kdht.isDisableBackSpace;
       },
       set(val) {
-        this.$store.commit("iht/UP_DISABLE_BACKSPACE", val);
+        this.$store.commit("kdht/UP_DISABLE_BACKSPACE", val);
       }
     },
     isShowWordHint: {
       get() {
-        return this.$store.state.iht.isShowWordHint;
+        return this.$store.state.kdht.isShowWordHint;
       },
       set(val) {
-        this.$store.commit("iht/UP_WORD_HINT", val);
+        this.$store.commit("kdht/UP_WORD_HINT", val);
       }
     }
   },
@@ -198,7 +199,7 @@ export default {
             ) + 0;
           var lessonID = this.listBasicPassages[genRandomNum].id;
           this.$router.push({
-            name: "typing-test-inscript-hindi",
+            name: "typing-test-krutidev-hindi",
             params: { passageType: "basic", id: Base64.encode(lessonID) }
           });
         } else {
@@ -209,19 +210,19 @@ export default {
             ) + 0;
           var lessonID = this.listBasicPassages[genRandomNum].id;
           this.$router.push({
-            name: "typing-test-inscript-hindi",
+            name: "typing-test-krutidev-hindi",
             params: { passageType: "advanced", id: Base64.encode(lessonID) }
           });
         }
       } else {
         if (this.selectPassageType === "Basic") {
           this.$router.push({
-            name: "typing-test-inscript-hindi",
+            name: "typing-test-krutidev-hindi",
             params: { passageType: "basic", id: this.selectedTypingPassage }
           });
         } else {
           this.$router.push({
-            name: "typing-test-inscript-hindi",
+            name: "typing-test-krutidev-hindi",
             params: { passageType: "advanced", id: this.selectedTypingPassage }
           });
         }
