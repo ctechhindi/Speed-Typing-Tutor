@@ -64,16 +64,26 @@ const template = [
       submenu: [
          { 
             label: "Welcome",
-            click: () => {
-               ipcRenderer.send('toggle-welcome-win')
-            }
+            click: () => { ipcRenderer.send('toggle-welcome-win') }
+         },
+         {
+            label: 'Source Code',
+            click () { require('electron').shell.openExternal('https://github.com/ctechhindi/Speed-Typing-Tutor') }
+         },
+         {
+            label: "Report Issue",
+            click () { require('electron').shell.openExternal('https://github.com/ctechhindi/Speed-Typing-Tutor/issues') }
          },
          { 
             label: "About",
+            click: () => { ipcRenderer.send('toggle-about-win') }
+         },
+         { 
+            label: "Check for Updates...",
             click: () => {
-               ipcRenderer.send('toggle-about-win')
+               
             }
-         }
+         },
       ]
    }
 ]
