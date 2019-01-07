@@ -159,13 +159,13 @@ ipcMain.on('open-updates-win', (event, arg) => {
       title: APPP.productName + ' is up to date',
       detail: "There is no update to the application right now. ♥ Enjoy",
     }
-    dialog.showMessageBox(options, function () {})
+    dialog.showMessageBox(options, function () { })
 
   } else {
     const options = {
       type: 'info',
       title: 'A new version available',
-      message: "v"+ arg,
+      message: "v" + arg,
       detail: "A new version available. Click the button below to download the latest version.",
       buttons: ['Download New Version'],
       cancelId: 1
@@ -174,4 +174,45 @@ ipcMain.on('open-updates-win', (event, arg) => {
       event.sender.send('updates-dialog-selection', index)
     })
   }
+})
+
+/**
+ * Download Application Update File
+ * --------------------------------------------------------------------------------------------
+ * https://electronjs.org/docs/api/download-item?query=DownloadItem#class-downloaditem
+ * 
+ * "fileURL" : item.getURL()
+ * "fileSize" : item.getTotalBytes() // size in bytes 
+ * "fileName" : item.getFilename()
+ * "mimeType" : item.getMimeType()
+ * --------------------------------------------------------------------------------------------
+ */
+ipcMain.on("update-download", (event, file) => {
+  win.webContents.session.on('will-download', (event, item, webContents) => {
+    item.setSavePath(app.getAppPath())
+
+    item.on('updated', (event, state) => {
+      if (state === 'interrupted') {
+      } else if (state === 'progressing') {
+        if (item.isPaused()) { 
+          console.log('Download is paused')
+        } else {
+          win.webContents.send("download-progress", {
+            "totalSize": item.getTotalBytes(),
+            "receivedSize": item.getReceivedBytes(),
+            "savePath": app.getAppPath(),
+          })
+        }
+      }
+    })
+
+    item.once('done', (event, state) => {
+      if (state === 'completed') {
+        win.webContents.send("download-complete",'Download successfully')
+      } else {
+        win.webContents.send("download-failed", state)
+      }
+    })
+  })
+  win.webContents.downloadURL(file.url)
 })

@@ -1,4 +1,6 @@
 
+* `INSERT:` Application New Version Auto Install
+
 ### Releases Version `0.0.2`
 
 * `Fix Issue:` "Invalid Host/Origin header" errors : `npm i webpack-dev-server`
