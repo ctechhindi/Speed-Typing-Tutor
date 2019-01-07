@@ -151,10 +151,17 @@ const { remote, ipcRenderer } = require("electron")
  */
 ipcRenderer.on("download-progress", (event, d) => {
   console.log(d);
-  if (d.receivedSize <= d.totalSize) {
-    document.getElementById('downloadProgess').setAttribute("max", d.totalSize);
-    document.getElementById('downloadProgess').setAttribute("value", d.receivedSize);
-    // document.getElementById('downloadProgess').style.display = 'none';
+  if (d.receivedSize !== undefined) {
+    if (d.receivedSize <= d.totalSize) {
+      document.getElementById('downloadProgess').setAttribute("max", d.totalSize);
+      document.getElementById('downloadProgess').setAttribute("value", d.receivedSize);
+      // document.getElementById('downloadProgess').style.display = 'none';
+    }
+    
+    if (d.receivedSize === d.totalSize) {
+      remote.app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })
+      remote.app.exit(0)
+    }
   }
 });
 
@@ -163,8 +170,8 @@ ipcRenderer.on("download-progress", (event, d) => {
  */
 ipcRenderer.on("download-complete", (event, msg) => {
   console.log("download-complete");
-  // remote.app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })
-  // remote.app.exit(0)
+  remote.app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })
+  remote.app.exit(0)
 });
 
 /**
@@ -181,7 +188,8 @@ export default {
     return {
       // Check Available Update
       isAvailableUpdate: true,
-      downloadURL: "https://raw.githubusercontent.com/ctechhindi/Speed-Typing-Tutor/master/docs/images/speed-typing-tutor.png",
+      downloadURL: "https://raw.githubusercontent.com/ctechhindi/Speed-Typing-Tutor/master/docs/data/update.asar",
+      // downloadURL: "https://raw.githubusercontent.com/ctechhindi/Speed-Typing-Tutor/master/docs/images/speed-typing-tutor.png",
     };
   },
   methods: {

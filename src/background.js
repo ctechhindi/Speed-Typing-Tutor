@@ -7,6 +7,20 @@ const APPP = require('../package.json') // Load Package JSON File
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
+/**
+ * Update Application:  Rename File Name
+ */
+var fs = require('fs');
+fs.readFile(process.resourcesPath + "\\update.asar", function (error, data) {
+  if (error) {
+    return;
+  } else {
+    fs.rename(process.resourcesPath + "\\update.asar", process.resourcesPath + "\\app.asar", function (err) {
+      if (err) console.log('ERROR: ' + err);
+    });
+  }
+});
+
 // Main Window
 let win
 
@@ -17,6 +31,9 @@ function createWindow() {
   // console.log(process.env.INIT_CWD); // F:\Project\_Projects\Easy Typing\EasyTyping-Electron\easy-typing
   // console.log(__dirname); // F:\Project\_Projects\Easy Typing\EasyTyping-Electron\easy-typing\dist_electron
   // console.log(__static); // F:\Project\_Projects\Easy Typing\EasyTyping-Electron\easy-typing\public
+  // F:\Project\_Projects\Easy Typing\EasyTyping-Electron\easy-typing\dist_electron\win-ia32-unpacked\resources\app.asar
+  // process.resourcesPath // "F:\Project\_Projects\Easy Typing\EasyTyping-Electron\easy-typing\dist_electron\win-ia32-unpacked\resources"
+  // app.getAppPath() // "F:\Project\_Projects\Easy Typing\EasyTyping-Electron\easy-typing\dist_electron\win-ia32-unpacked\resources\app.asar"
 
   /**
    * Create the Main window
@@ -188,19 +205,23 @@ ipcMain.on('open-updates-win', (event, arg) => {
  * --------------------------------------------------------------------------------------------
  */
 ipcMain.on("update-download", (event, file) => {
+  win.webContents.downloadURL(file.url)
   win.webContents.session.on('will-download', (event, item, webContents) => {
     item.setSavePath(app.getAppPath())
 
     item.on('updated', (event, state) => {
       if (state === 'interrupted') {
       } else if (state === 'progressing') {
-        if (item.isPaused()) { 
+        if (item.isPaused()) {
           console.log('Download is paused')
         } else {
           win.webContents.send("download-progress", {
             "totalSize": item.getTotalBytes(),
             "receivedSize": item.getReceivedBytes(),
             "savePath": app.getAppPath(),
+            // "savePath2": path.join( app.getAppPath(), '/../../../' ),
+            "process": process,
+            "app": app,
           })
         }
       }
@@ -208,11 +229,10 @@ ipcMain.on("update-download", (event, file) => {
 
     item.once('done', (event, state) => {
       if (state === 'completed') {
-        win.webContents.send("download-complete",'Download successfully')
+        win.webContents.send("download-complete", 'Download successfully')
       } else {
         win.webContents.send("download-failed", state)
       }
     })
   })
-  win.webContents.downloadURL(file.url)
 })
