@@ -1,5 +1,10 @@
 
-* `INSERT:` Application New Version Auto Install
+### Releases Version `0.0.3`
+
+* `INSERT:` Auto Update New Version
+* `INSERT LIBRARY:` [Tracer](https://github.com/baryon/tracer)
+* `INSERT LIBRARY:` [electron-asar-hot-updater](https://github.com/jeevan15498/electron-asar-hot-updater)
+* `INSERT LIBRARY:` [electron-progressbar](https://github.com/AndersonMamede/electron-progressbar)
 
 ### Releases Version `0.0.2`
 

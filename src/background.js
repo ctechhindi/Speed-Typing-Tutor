@@ -1,28 +1,57 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, ipcMain, dialog, globalShortcut, ipcRenderer } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain, dialog, globalShortcut, Menu } from 'electron'
 import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-builder/lib'
+
+import axios from 'axios';
 
 const APPP = require('../package.json') // Load Package JSON File
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
-/**
- * Update Application:  Rename File Name
- */
 var fs = require('fs');
-fs.readFile(process.resourcesPath + "\\update.asar", function (error, data) {
-  if (error) {
-    return;
-  } else {
-    fs.rename(process.resourcesPath + "\\update.asar", process.resourcesPath + "\\app.asar", function (err) {
-      if (err) console.log('ERROR: ' + err);
-    });
+// const FileSystem = require('original-fs')
+
+const EAU = require('electron-asar-hot-updater-v1');
+const ProgressBar = require('electron-progressbar');
+
+/**
+ * Create Debug File in Resources Folder
+ */
+var logger = require('tracer').console({
+  transport: function (data) {
+    var logFile = fs.createWriteStream(process.resourcesPath + "\\appDebug.log", { flags: 'a' });
+    logFile.write(data.rawoutput + '\n');
   }
 });
 
+function compareVersions(v1, v2) {
+  v1 = v1.split(".");
+  v2 = v2.split(".");
+  var longestLength = v1.length > v2.length ? v1.length : v2.length;
+  for (var i = 0; i < longestLength; i++) {
+    if (v1[i] != v2[i]) {
+      return v1 > v2 ? 1 : -1;
+    }
+  }
+  return 0;
+}
+
+function formatBytes(bytes, decimals) {
+  if (bytes == 0) return '0';
+  var k = 1024,
+      dm = decimals <= 0 ? 0 : decimals || 2,
+      sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+      i = Math.floor(Math.log(bytes) / Math.log(k));
+  return {
+    "size": parseFloat((bytes / Math.pow(k, i)).toFixed(dm)), 
+    "format": sizes[i]
+  }
+}
+
 // Main Window
 let win
+let progressBar
 
 // Standard scheme must be registered before the app is ready
 protocol.registerStandardSchemes(['app'], { secure: true })
@@ -33,6 +62,7 @@ function createWindow() {
   // console.log(__static); // F:\Project\_Projects\Easy Typing\EasyTyping-Electron\easy-typing\public
   // F:\Project\_Projects\Easy Typing\EasyTyping-Electron\easy-typing\dist_electron\win-ia32-unpacked\resources\app.asar
   // process.resourcesPath // "F:\Project\_Projects\Easy Typing\EasyTyping-Electron\easy-typing\dist_electron\win-ia32-unpacked\resources"
+  // process.resourcesPath // "easy-typing\node_modules\electron\dist\resources
   // app.getAppPath() // "F:\Project\_Projects\Easy Typing\EasyTyping-Electron\easy-typing\dist_electron\win-ia32-unpacked\resources\app.asar"
 
   /**
@@ -48,6 +78,144 @@ function createWindow() {
   win.on('page-title-updated', (evt) => {
     evt.preventDefault();
   });
+  // Set Menu
+  const template = [
+    {
+      label: 'Main',
+      submenu: [
+        {
+          label: "Home Page",
+          click: () => {
+            win.webContents.send('open-route', "/")
+          }
+        },
+        { role: 'togglefullscreen' },
+        { role: 'reload' },
+        { type: 'separator' },
+        // { role: 'toggledevtools' },
+        { role: "quit" }
+      ],
+    },
+    {
+      label: 'Learn Typing',
+      submenu: [
+        {
+          label: "Learn English Typing",
+          click: () => {
+            win.webContents.send('open-route', "/learn/english")
+          }
+        },
+        {
+          label: "Learn KrutiDev Hindi Typing",
+          click: () => {
+            win.webContents.send('open-route', "/learn/hindi/krutidev")
+          }
+        },
+        {
+          label: "Learn Inscript Hindi Typing",
+          click: () => {
+            win.webContents.send('open-route', "/learn/hindi/inscript")
+          }
+        }
+      ],
+    },
+    {
+      label: 'Typing Test',
+      submenu: [
+        {
+          label: "English Typing Test",
+          click: () => {
+            win.webContents.send('open-route', "/typing-test/english")
+          }
+        },
+        {
+          label: "KrutiDev Hindi Typing Test",
+          click: () => {
+            win.webContents.send('open-route', "/typing-test/hindi/krutidev")
+          }
+        },
+        {
+          label: "Inscript Hindi Typing Test",
+          click: () => {
+            win.webContents.send('open-route', "/typing-test/hindi/inscript")
+          }
+        }
+      ]
+    },
+    {
+      label: 'Help',
+      submenu: [
+        {
+          label: "Welcome",
+          click: () => {
+            var options = {
+              type: 'info',
+              title: 'Welcome',
+              message: APPP.productName + " " + APPP.version,
+              detail: "To Use Hindi (Inscript, Kruti Dev) and English Typing and Test, Download the Application or use online",
+            }
+            dialog.showMessageBox(options)
+          }
+        },
+        {
+          label: 'Source Code',
+          click() { require('electron').shell.openExternal('https://github.com/ctechhindi/Speed-Typing-Tutor') }
+        },
+        {
+          label: "Report Issue",
+          click() { require('electron').shell.openExternal('https://github.com/ctechhindi/Speed-Typing-Tutor/issues') }
+        },
+        {
+          label: "Check for Updates...",
+          click: () => {
+            axios.get('https://raw.githubusercontent.com/ctechhindi/Speed-Typing-Tutor/master/package.json').then(function (resp) {
+              if (resp.data.version !== undefined) {
+                if (compareVersions(resp.data.version, APPP.version)) {
+                  var options = {
+                    type: 'info',
+                    title: 'A new version available',
+                    message: "v" + resp.data.version,
+                    detail: "A new version available. Click the button below to download the latest version.",
+                    buttons: ['Download New Version'],
+                    cancelId: 1
+                  }
+                  dialog.showMessageBox(options, function (index) {
+                    if (index === 0) {
+                      require('electron').shell.openExternal('https://github.com/ctechhindi/Speed-Typing-Tutor/releases')
+                    }
+                  })
+                } else {
+                  var options = {
+                    type: 'error',
+                    title: APPP.productName + ' is up to date',
+                    detail: "There is no update to the application right now. ♥ Enjoy",
+                  }
+                  dialog.showMessageBox(options)
+                }
+              }
+            }).catch(function (error) {
+              console.log(error);
+            });
+          }
+        },
+        {
+          label: "About",
+          click: () => {
+            var options = {
+              type: 'info',
+              title: 'About',
+              message: APPP.productName,
+              detail: "Version: " + APPP.version + "\nDate: " + APPP.date + "\nNode: " + process.versions.node + "\nChrome: " + process.versions.chrome + "\nElectron : " + process.versions.electron,
+            }
+            dialog.showMessageBox(options)
+          }
+        },
+      ]
+    }
+  ]
+  const menu = Menu.buildFromTemplate(template)
+  win.setMenu(menu);
+
 
   /**
    * About Window
@@ -109,6 +277,7 @@ app.on('activate', () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
+
   if (isDevelopment && !process.env.IS_TEST) {
     // Install Vue Devtools
     await installVueDevtools()
@@ -121,7 +290,83 @@ app.on('ready', async () => {
 
   createWindow()
 
-  // require('update-electron-app')()
+  // Initiate the module
+  EAU.init({
+    'api': 'https://raw.githubusercontent.com/ctechhindi/Speed-Typing-Tutor/master/package.json', // The API EAU will talk to
+    'server': false // Where to check. true: server side, false: client side, default: true.
+  });
+
+  EAU.check(function (error, last, body) {
+    if (error) {
+      if (error === 'no_update_available') { return false; }
+      logger.error('API Error: %j', error)
+      return false
+    } else {
+      if (body !== undefined) {
+        const options = {
+          type: 'info',
+          title: 'A new version available',
+          message: "v" + body.version,
+          detail: "A new version available. Click the button below to download the latest version.",
+          buttons: ["Update New Version"],
+          cancelId: 1
+        }
+        dialog.showMessageBox(win, options, function (index) {
+          if (index === 0) {
+            // Update New Version
+            var fileSize = formatBytes(body.size)
+            progressBar = new ProgressBar({
+              indeterminate: false,
+              title: 'Downloading...',
+              text: 'Preparing data...',
+              detail: 'Wait...',
+              browserWindow: {
+                parent: win,
+                icon: __static + '/img/icons/logo-32.png'
+              },
+              maxValue: fileSize.size, // File Size in 
+            });
+
+            progressBar.on('completed', function () {
+              progressBar.detail = 'Downloading completed...';
+            }).on('progress', function (value) {
+              progressBar.detail = `Downloading ${value} ${fileSize.format} out of ${progressBar.getOptions().maxValue} ${fileSize.format}`;
+            })
+            .on('aborted', function () {
+              dialog.showMessageBox(win, {
+                type: 'warning',
+                title: 'Download Aborted',
+                message: 'Downloading Aborted.',
+              }, function () {});
+            });
+
+            EAU.progress(function (state) {
+              if (!progressBar.isCompleted()) {
+                var transferredSizeMB = (state.size.transferred / Math.pow(1024,2)).toFixed(2)
+                progressBar.value = parseFloat(transferredSizeMB)
+              }
+              // {
+              //   "time": { "elapsed":63.327, "remaining":0.249 },
+              //   "speed": 581835.2045730889,
+              //   "percent": 0.996081191780516,
+              //   "size": { "total":36990838, "transferred":36845878 }
+              // }
+            })
+
+            EAU.download(function (error) {
+              logger.log('Download progress : %j', error)
+              if (error) {
+                dialog.showErrorBox('info', error)
+                return false
+              }
+              progressBar.setCompleted();
+              dialog.showErrorBox('info', 'App updated successfully! Restart it please.')
+            })
+          }
+        })
+      }
+    }
+  })
 })
 
 // Exit cleanly on request from parent process in development mode.
@@ -138,101 +383,3 @@ if (isDevelopment) {
     })
   }
 }
-
-
-/**
- * Show About Window (toggle-about-win)
- */
-ipcMain.on('toggle-about-win', (event, arg) => {
-  const options = {
-    type: 'info',
-    title: 'About',
-    message: APPP.productName,
-    detail: "Version: " + APPP.version + "\nDate: " + APPP.date + "\nNode: " + process.versions.node + "\nChrome: " + process.versions.chrome + "\nElectron : " + process.versions.electron,
-  }
-  dialog.showMessageBox(options, function () { })
-})
-
-/**
- * Show Welcome Menu (toggle-welcome-win)
- */
-ipcMain.on('toggle-welcome-win', (event, arg) => {
-  const options = {
-    type: 'info',
-    title: 'Welcome',
-    message: APPP.productName + " " + APPP.version,
-    detail: "To Use Hindi (Inscript, Kruti Dev) and English Typing and Test, Download the Application or use online",
-  }
-  dialog.showMessageBox(options, function () { })
-})
-
-/**
- * Show Welcome Menu (open-updates-win)
- */
-ipcMain.on('open-updates-win', (event, arg) => {
-  if (arg === "alreadyUpdate") {
-    const options = {
-      type: 'error',
-      title: APPP.productName + ' is up to date',
-      detail: "There is no update to the application right now. ♥ Enjoy",
-    }
-    dialog.showMessageBox(options, function () { })
-
-  } else {
-    const options = {
-      type: 'info',
-      title: 'A new version available',
-      message: "v" + arg,
-      detail: "A new version available. Click the button below to download the latest version.",
-      buttons: ['Download New Version'],
-      cancelId: 1
-    }
-    dialog.showMessageBox(options, function (index) {
-      event.sender.send('updates-dialog-selection', index)
-    })
-  }
-})
-
-/**
- * Download Application Update File
- * --------------------------------------------------------------------------------------------
- * https://electronjs.org/docs/api/download-item?query=DownloadItem#class-downloaditem
- * 
- * "fileURL" : item.getURL()
- * "fileSize" : item.getTotalBytes() // size in bytes 
- * "fileName" : item.getFilename()
- * "mimeType" : item.getMimeType()
- * --------------------------------------------------------------------------------------------
- */
-ipcMain.on("update-download", (event, file) => {
-  win.webContents.downloadURL(file.url)
-  win.webContents.session.on('will-download', (event, item, webContents) => {
-    item.setSavePath(app.getAppPath())
-
-    item.on('updated', (event, state) => {
-      if (state === 'interrupted') {
-      } else if (state === 'progressing') {
-        if (item.isPaused()) {
-          console.log('Download is paused')
-        } else {
-          win.webContents.send("download-progress", {
-            "totalSize": item.getTotalBytes(),
-            "receivedSize": item.getReceivedBytes(),
-            "savePath": app.getAppPath(),
-            // "savePath2": path.join( app.getAppPath(), '/../../../' ),
-            "process": process,
-            "app": app,
-          })
-        }
-      }
-    })
-
-    item.once('done', (event, state) => {
-      if (state === 'completed') {
-        win.webContents.send("download-complete", 'Download successfully')
-      } else {
-        win.webContents.send("download-failed", state)
-      }
-    })
-  })
-})

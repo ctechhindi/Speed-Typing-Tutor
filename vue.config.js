@@ -7,10 +7,10 @@ module.exports = {
         asar: true,
         productName: "Speed Typing Tutor",
         copyright: "Copyright © 2018 KingWeb, Inc.",
-        artifactName: "${productName}-${version}-${os}${arch}.${ext}",
+        artifactName: "${productName}-${version}-${os}-${platform}-${arch}.${ext}",
         mac: {
           "category": "public.app-category.education",
-          "artifactName": "${productName}-${version}-${arch}.${ext}",
+          "artifactName": "${productName}-${version}-${os}-${platform}-${arch}.${ext}",
         },
         linux: {
           "category": "Typing;TypingTest;HindiTyping;EnglishTyping",
@@ -23,7 +23,7 @@ module.exports = {
             "snap"
           ],
           "maintainer": "Jeevan Lal <jeevan15498@gmail.com>",
-          "artifactName": "${productName}-${version}-${arch}.${ext}",
+          "artifactName": "${productName}-${version}-${os}-${platform}-${arch}.${ext}",
         },
         deb: {
           "synopsis": "Speed Typing Tutor",
@@ -60,16 +60,25 @@ module.exports = {
               "target": "nsis", 
               "arch": [
                 "x64",
-                "ia32"
+                // "ia32"
               ]
-            }
+            },
+            // {
+            //   "target": "msi",
+            //   "arch": [
+            //     "x64",
+            //     "ia32"
+            //   ]
+            // }
           ],
           "icon": "public/icon.ico",
-          "publisherName": "KingWeb, Inc."
+          "publisherName": "KingWeb, Inc.",
+          "artifactName": "${productName}-${version}-${os}-${platform}-${arch}.${ext}",
         },
         nsis :{
           "oneClick": false,
-          // "perMachine": true,
+          "artifactName": "${productName}-${version}-${os}-${platform}-${arch}.${ext}",
+          "perMachine": true,
           // "allowToChangeInstallationDirectory": true
         },
       }

@@ -17,15 +17,7 @@
           <div v-show="isAvailableUpdate" class="notification is-warning">
             <strong
               style="cursor: pointer;"
-              @click="downloadUpdateFile()"
             >A new version available,</strong> download the latest version and your new version will be automatically installed.
-          </div>
-          <div id="downloadContent" style="display: none;">
-            <p style="text-align: center; padding-bottom: 10px;">
-              <span style="color: #f93c3c; font-weight: 900;">(Please don't close application and Internet connection)</span>
-            </p>
-            <progress id="downloadProgess" class="progress is-success" value="0" max="100"></progress>
-            <p>Downloading...</p>
           </div>
         </div>
         <section class="section container is-fullhd">
@@ -144,52 +136,13 @@
 const APPP = require("../../package.json"); // Load Package JSON File
 
 import axios from "axios"
-const { remote, ipcRenderer } = require("electron")
-
-/**
- * Application Update Download Progress
- */
-ipcRenderer.on("download-progress", (event, d) => {
-  console.log(d);
-  if (d.receivedSize !== undefined) {
-    if (d.receivedSize <= d.totalSize) {
-      document.getElementById('downloadProgess').setAttribute("max", d.totalSize);
-      document.getElementById('downloadProgess').setAttribute("value", d.receivedSize);
-      // document.getElementById('downloadProgess').style.display = 'none';
-    }
-    
-    if (d.receivedSize === d.totalSize) {
-      remote.app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })
-      remote.app.exit(0)
-    }
-  }
-});
-
-/**
- * Application Update Download Complete
- */
-ipcRenderer.on("download-complete", (event, msg) => {
-  console.log("download-complete");
-  remote.app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })
-  remote.app.exit(0)
-});
-
-/**
- * Application Update Download Failed
- */
-ipcRenderer.on("download-failed", (event, msg) => {
-  alert("Application New Version Download is Failed.")
-});
-
 
 export default {
   name: "home",
   data() {
     return {
       // Check Available Update
-      isAvailableUpdate: true,
-      downloadURL: "https://raw.githubusercontent.com/ctechhindi/Speed-Typing-Tutor/master/docs/data/update.asar",
-      // downloadURL: "https://raw.githubusercontent.com/ctechhindi/Speed-Typing-Tutor/master/docs/images/speed-typing-tutor.png",
+      isAvailableUpdate: false,
     };
   },
   methods: {
@@ -238,24 +191,13 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
-    },
-
-    /**
-     * Download Update File
-     */
-    downloadUpdateFile() {
-      ipcRenderer.send("update-download", {
-        url: this.downloadURL,
-      })
-      this.isAvailableUpdate = false
-      document.getElementById('downloadContent').style.display = 'block';
-    },
+    }
   },
   mounted() {
     this.$Progress.finish();
   },
   created() {
-    // this.checkUpdate()
+    this.checkUpdate()
   }
 };
 </script>
