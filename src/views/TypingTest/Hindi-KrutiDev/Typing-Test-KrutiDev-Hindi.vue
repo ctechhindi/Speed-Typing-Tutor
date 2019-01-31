@@ -312,7 +312,7 @@ export default {
 /** Typing Content Div */
 #krutiDevHindiWords {
   width: 96.4%;
-  height: 184px;
+  height: 285px;
   overflow-y: scroll;
 }
 

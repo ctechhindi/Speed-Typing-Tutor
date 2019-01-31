@@ -187,6 +187,10 @@ export default {
               }
             }
           })
+          // Show Error if Current Word Length greater than Type Word Length
+          if (cWordS.length < typingChars.length) {
+            that.wrongWordHighlight(that.result.typingWordIndex);
+          }
         } catch (e) {
           if (e !== BreakException) throw e;
         }
@@ -283,9 +287,11 @@ export default {
             var strSplit = str.split(" ");
             var strLastWord = strSplit[strSplit.length - 1];
             if (this.currentTypingWord === strLastWord) {
-              this.lastWordStatus = "right"; }
+              this.lastWordStatus = "right";
+            }
             else {
-              this.lastWordStatus = "wrong"; }
+              this.lastWordStatus = "wrong";
+            }
 
             // Check Last Word Status [wrong, right]
             if (this.lastWordStatus === "wrong") {

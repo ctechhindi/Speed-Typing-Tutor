@@ -1,43 +1,12 @@
 {
   "name": "speed-typing-tutor",
-  "version": "0.0.3",
-  "productName": "Speed Typing Tutor",
+  "version": "0.0.4",
+  "private": false,
   "description": "English and Hindi (Inscript, Kruti Dev) Typing Learn and Typing Test, Windows Application",
-  "asar": "https://raw.githubusercontent.com/ctechhindi/Speed-Typing-Tutor/master/docs/data/update.asar",
-  "size": 36990838,
   "author": {
     "name": "Jeevan Lal",
     "email": "speedtypingtutor@gmail.com"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ctechhindi/Speed-Typing-Tutor.git"
-  },
-  "bugs": {
-    "url": "https://github.com/ctechhindi/Speed-Typing-Tutor/issues"
-  },
-  "homepage": "https://easytyping.netlify.com",
-  "date": "Mon Dec 24 2018 21:03:31 GMT+0530",
-  "license": "MIT",
-  "copyright": "KingWeb, Inc.",
-  "copyrightURL": "http://kingweb.in",
-  "social": {
-    "github": "https://github.com/ctechhindi",
-    "googlePlus": "https://bit.ly/ctechindi",
-    "fb": "https://bit.ly/ctech-fb",
-    "youtube": "https://bit.ly/ctechhindi-channel",
-    "twitter": "https://twitter.com/ctechindi",
-    "instagram": "https://bit.ly/ctech-instagram",
-    "stackOverflow": "https://stackoverflow.com/users/9976176/c-tech-hindi"
-  },
-  "keywords": [
-    "electron",
-    "vue",
-    "Typing-Tutor",
-    "Hindi-Typing-Tutor",
-    "English-Typing-Tutor"
-  ],
-  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -67,8 +36,8 @@
     "@vue/cli-plugin-babel": "^3.2.0",
     "@vue/cli-plugin-pwa": "^3.2.0",
     "@vue/cli-service": "^3.2.0",
-    "electron": "^4.0.1",
-    "vue-cli-plugin-electron-builder": "^1.0.0-rc.9",
+    "electron": "^4.0.3",
+    "vue-cli-plugin-electron-builder": "^1.0.0-rc.10",
     "vue-template-compiler": "^2.5.17"
   },
   "postcss": {
@@ -81,5 +50,36 @@
     "last 2 versions",
     "not ie <= 8"
   ],
-  "main": "background.js"
+  "asar": "https://raw.githubusercontent.com/ctechhindi/Speed-Typing-Tutor/master/docs/data/update.asar",
+  "bugs": {
+    "url": "https://github.com/ctechhindi/Speed-Typing-Tutor/issues"
+  },
+  "copyright": "KingWeb, Inc.",
+  "copyrightURL": "http://kingweb.in",
+  "date": "Mon Dec 24 2018 21:03:31 GMT+0530",
+  "homepage": "https://easytyping.netlify.com",
+  "keywords": [
+    "electron",
+    "vue",
+    "Typing-Tutor",
+    "Hindi-Typing-Tutor",
+    "English-Typing-Tutor"
+  ],
+  "license": "MIT",
+  "main": "background.js",
+  "productName": "Speed Typing Tutor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ctechhindi/Speed-Typing-Tutor.git"
+  },
+  "size": 36990838,
+  "social": {
+    "github": "https://github.com/ctechhindi",
+    "googlePlus": "https://bit.ly/ctechindi",
+    "fb": "https://bit.ly/ctech-fb",
+    "youtube": "https://bit.ly/ctechhindi-channel",
+    "twitter": "https://twitter.com/ctechindi",
+    "instagram": "https://bit.ly/ctech-instagram",
+    "stackOverflow": "https://stackoverflow.com/users/9976176/c-tech-hindi"
+  }
 }

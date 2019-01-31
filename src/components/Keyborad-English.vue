@@ -260,6 +260,8 @@ export default {
 
 #keyboard ul {
   clear: both;
+  font-size: 23px;
+  font-weight: 600;
 }
 
 #keyboard ul li {
@@ -272,6 +274,7 @@ export default {
   background: #fee;
   color: #036;
   border: 1px solid #f9f9f9;
+  box-shadow: 1px 1px 1px -1px black
 }
 
 #keyboard ul li span.on {

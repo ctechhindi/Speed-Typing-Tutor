@@ -19,8 +19,7 @@
                 <button @click="playAgainTyping" class="button is-medium is-success">
                   <b-icon size="is-medium" icon="play"></b-icon>
                 </button>
-              </b-tooltip>
-              &nbsp; &nbsp; &nbsp;
+              </b-tooltip>&nbsp; &nbsp; &nbsp;
               <b-tooltip label="Reload Passage" type="is-primary" animated>
                 <button @click="reloadTypingPassage" class="button is-medium is-primary">
                   <b-icon size="is-medium" icon="reload"></b-icon>
@@ -118,11 +117,7 @@
             <b-icon icon="lightbulb-on"></b-icon>
           </b-tag>
         </b-tooltip>&nbsp;
-        <strong
-          style="letter-spacing: 8px;"
-          v-for="w in hintWord"
-          :key="w.index"
-        >
+        <strong style="letter-spacing: 8px;" v-for="w in hintWord" :key="w.index">
           <span v-if="w.isUnicodeKey">
             <b-tooltip
               :label="'Alt + '+ w.altUnicodeKey"
@@ -185,36 +180,75 @@ Vue.component(VueCountdown.name, VueCountdown);
 
 import { Base64 } from "js-base64";
 
-import MX_Typing_Test from '../MX_Typing_Test.js'
+import MX_Typing_Test from "../MX_Typing_Test.js";
 
 export default {
   name: "typing-test-inscript-hindi",
-  mixins: [ MX_Typing_Test ],
+  mixins: [MX_Typing_Test],
 
   data() {
     return {
       hintWord: false,
-      typingContentDivClass: "inscriptHindiWords", // This Class name Using in CSS
-    }
+      typingContentDivClass: "inscriptHindiWords" // This Class name Using in CSS
+    };
   },
 
   created() {
-    var lid = Base64.decode(this.$route.params.id)
-    var PType = this.$route.params.passageType
+    var lid = Base64.decode(this.$route.params.id);
+    var PType = this.$route.params.passageType;
     if (this.$store.getters["iht/hasLesson"](lid, PType)) {
-      this.$Progress.start()
+      this.$Progress.start();
       this.$store.getters["iht/getLesson"](lid, PType).then(module => {
-        var lengthWords = this.$store.state.iht.selectedTypingWordsLength;
-        this.typingContent = module.default.passage;
-        if (lengthWords >= 1000) {
-          this.typingContent = module.default.passage;
+        // User Choise Typing Words Length
+        var userSelectWordsLength = this.$store.state.iht
+          .selectedTypingWordsLength;
+        var passageWordsLength = this.countWords(module.default.passage);
+
+        // console.log("User Select Words Length: " + userSelectWordsLength);
+        // console.log("Passage Words Length: " + passageWordsLength);
+
+        if (PType === "beginner") {
+          // Shuffle Passage
+          if (userSelectWordsLength <= passageWordsLength) {
+            if (userSelectWordsLength === passageWordsLength) {
+              var passageShuffle = this.shuffle((module.default.passage).split(" "))
+              this.typingContent = passageShuffle.join(" ")
+            } else {
+              var passageShuffle = this.shuffle(module.default.passage.split(" ").slice(0, -(passageWordsLength - userSelectWordsLength)))
+              this.typingContent = passageShuffle.join(" ")
+            }
+          } else {
+            // Passage Words Length: Less (कम)
+            var passMulti = Math.ceil(userSelectWordsLength / passageWordsLength); // passageWordsLength * passMulti
+            var newPassage = (module.default.passage + " ").repeat(passMulti);
+
+            var passageShuffle = this.shuffle(newPassage.split(" ").slice(0, -(this.countWords(newPassage) - userSelectWordsLength)))
+            this.typingContent = passageShuffle.join(" ")
+          }
         } else {
-          this.typingContent = module.default.passage
-            .split(" ")
-            .slice(0, -(1000 - lengthWords))
-            .join(" ");
+
+          if (userSelectWordsLength <= passageWordsLength) {
+            if (userSelectWordsLength === passageWordsLength) {
+              this.typingContent = module.default.passage;
+            } else {
+              this.typingContent = module.default.passage
+                .split(" ")
+                .slice(0, -(passageWordsLength - userSelectWordsLength))
+                .join(" ");
+            }
+          } else {
+            // Passage Words Length: Less (कम)
+            var passMulti = Math.ceil(userSelectWordsLength / passageWordsLength); // passageWordsLength * passMulti
+            var newPassage = (module.default.passage + " ").repeat(passMulti);
+  
+            this.typingContent = newPassage
+              .split(" ")
+              .slice(0, -(this.countWords(newPassage) - userSelectWordsLength))
+              .join(" ");
+          }
         }
-        this.$Progress.finish()
+
+        this.$Progress.finish();
         this.generateWords();
       });
     }
@@ -233,23 +267,32 @@ export default {
   },
 
   methods: {
-
     /**
      * Reload Typing Passage
      */
     reloadTypingPassage() {
-      var PType = this.$route.params.passageType
-      if (PType === "basic") {
-        var tPassage = this.$store.state.iht.listBasicPassages.length
-        var gNum = Math.floor(Math.random() * (tPassage - 1 + 1)) + 0
-        var lessonID = this.$store.state.iht.listBasicPassages[gNum].id;
+      var PType = this.$route.params.passageType;
+
+      // beginner, normal, advanced
+      if (PType === "beginner") {
+        var tPassage = this.$store.state.iht.listBeginnerPassages.length;
+        var gNum = Math.floor(Math.random() * (tPassage - 1 + 1)) + 0;
+        var lessonID = this.$store.state.iht.listBeginnerPassages[gNum].id;
         this.$router.push({
           name: "typing-test-inscript-hindi",
-          params: { passageType: "basic", id: Base64.encode(lessonID) }
+          params: { passageType: "beginner", id: Base64.encode(lessonID) }
+        });
+      } else if (PType === "normal") {
+        var tPassage = this.$store.state.iht.listNormalPassages.length;
+        var gNum = Math.floor(Math.random() * (tPassage - 1 + 1)) + 0;
+        var lessonID = this.$store.state.iht.listNormalPassages[gNum].id;
+        this.$router.push({
+          name: "typing-test-inscript-hindi",
+          params: { passageType: "normal", id: Base64.encode(lessonID) }
         });
       } else {
-        var tPassage = this.$store.state.iht.listAdvancedPassages.length
-        var gNum = Math.floor(Math.random() * (tPassage - 1 + 1)) + 0
+        var tPassage = this.$store.state.iht.listAdvancedPassages.length;
+        var gNum = Math.floor(Math.random() * (tPassage - 1 + 1)) + 0;
         var lessonID = this.$store.state.iht.listAdvancedPassages[gNum].id;
         this.$router.push({
           name: "typing-test-inscript-hindi",
@@ -265,7 +308,7 @@ export default {
     findUnicodeCharacter(str) {
       var returnData = [];
       for (var i = 0, n = str.length; i < n; i++) {
-        var out = this.$store.getters["findUChar/findInscriptAltKey"](str[i])
+        var out = this.$store.getters["findUChar/findInscriptAltKey"](str[i]);
         if (out === false) {
           returnData.push({
             string: str[i],
@@ -281,10 +324,34 @@ export default {
         }
       }
       return returnData;
+    },
+
+    /**
+     * Shuffle Array
+     * @param: {array}
+     */
+    shuffle(array) {
+      var currentIndex = array.length,
+        temporaryValue,
+        randomIndex;
+
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+
+      return array;
     }
   },
 
-  watch:{
+  watch: {
     currentTypingWord(v) {
       if (this.isShowWordHint === true) {
         if (v !== undefined) {
@@ -293,7 +360,7 @@ export default {
       }
     }
   }
-}
+};
 </script>
 
 <style>
@@ -311,7 +378,7 @@ export default {
 /** Typing Content Div */
 #inscriptHindiWords {
   width: 96.4%;
-  height: 184px;
+  height: 285px;
   overflow-y: scroll;
 }
 

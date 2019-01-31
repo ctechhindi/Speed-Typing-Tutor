@@ -71,12 +71,6 @@ export default new Router({
       path: '/typing-test/hindi/krutidev/:passageType/:id',
       name: 'typing-test-krutidev-hindi',
       component: () => import('./views/TypingTest/Hindi-KrutiDev/Typing-Test-KrutiDev-Hindi.vue')
-    },
-    // About
-    {
-      path: '/about',
-      name: 'about',
-      component: () => import('./views/About.vue')
-    },
+    }
   ]
 })

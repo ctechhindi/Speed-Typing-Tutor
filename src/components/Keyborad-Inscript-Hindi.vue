@@ -4,6 +4,7 @@
       <li id="Backquote">
         <p class="first_key">ॊ</p>
         <p class="second_key">ऒ</p>
+        <p class="third_key">`</p>
       </li>
       <li id="Digit1">
         <p class="first_key">1</p>
@@ -48,10 +49,12 @@
       <li id="Minus">
         <p class="first_key">-</p>
         <p class="second_key">ः</p>
+        <p class="third_key">-</p>
       </li>
       <li id="Equal">
         <p class="first_key">ृ</p>
         <p class="second_key">ऋ</p>
+        <p class="third_key">=</p>
       </li>
       <li id="Backspace" style="width: 88px; font-size: small;">Backspace</li>
     </ul>
@@ -60,54 +63,67 @@
       <li class="char" id="KeyQ">
         <p class="first_key">ौ</p>
         <p class="second_key">औ</p>
+        <p class="third_key">Q</p>
       </li>
       <li class="char" id="KeyW">
         <p class="first_key">ै</p>
         <p class="second_key">ऐ</p>
+        <p class="third_key">W</p>
       </li>
       <li class="char" id="KeyE">
         <p class="first_key">ा</p>
         <p class="second_key">आ</p>
+        <p class="third_key">E</p>
       </li>
       <li class="char" id="KeyR">
         <p class="first_key">ी</p>
         <p class="second_key">ई</p>
+        <p class="third_key">R</p>
       </li>
       <li class="char" id="KeyT">
         <p class="first_key">ू</p>
         <p class="second_key">ऊ</p>
+        <p class="third_key">T</p>
       </li>
       <li class="char" id="KeyY">
         <p class="first_key">ब</p>
         <p class="second_key">भ</p>
+        <p class="third_key">Y</p>
       </li>
       <li class="char" id="KeyU">
         <p class="first_key">ह</p>
         <p class="second_key">ङ</p>
+        <p class="third_key">U</p>
       </li>
       <li class="char" id="KeyI">
         <p class="first_key">ग</p>
         <p class="second_key">घ</p>
+        <p class="third_key">I</p>
       </li>
       <li class="char" id="KeyO">
         <p class="first_key">द</p>
         <p class="second_key">ध</p>
+        <p class="third_key">O</p>
       </li>
       <li class="char" id="KeyP">
         <p class="first_key">ज</p>
         <p class="second_key">झ</p>
+        <p class="third_key">P</p>
       </li>
       <li class="char" id="BracketLeft">
         <p class="first_key">ड</p>
         <p class="second_key">ढ</p>
+        <p class="third_key">[</p>
       </li>
       <li id="BracketRight">
         <p class="first_key">़</p>
         <p class="second_key">ञ</p>
+        <p class="third_key">]</p>
       </li>
       <li id="Backslash">
         <p class="first_key">ॉ</p>
         <p class="second_key">ऑ</p>
+        <p class="third_key">\</p>
       </li>
     </ul>
     <ul>
@@ -115,46 +131,57 @@
       <li class="char" id="KeyA">
         <p class="first_key">ो</p>
         <p class="second_key">ओ</p>
+        <p class="third_key">A</p>
       </li>
       <li class="char" id="KeyS">
         <p class="first_key">े</p>
         <p class="second_key">ए</p>
+        <p class="third_key">S</p>
       </li>
       <li class="char" id="KeyD">
         <p class="first_key">्</p>
         <p class="second_key">अ</p>
+        <p class="third_key">D</p>
       </li>
       <li class="char" id="KeyF">
         <p class="first_key">ि</p>
         <p class="second_key">इ</p>
+        <p class="third_key">F</p>
       </li>
       <li class="char" id="KeyG">
         <p class="first_key">ु</p>
         <p class="second_key">उ</p>
+        <p class="third_key">G</p>
       </li>
       <li class="char" id="KeyH">
         <p class="first_key">प</p>
         <p class="second_key">फ</p>
+        <p class="third_key">H</p>
       </li>
       <li class="char" id="KeyJ">
         <p class="first_key">र</p>
         <p class="second_key">ऱ</p>
+        <p class="third_key">J</p>
       </li>
       <li class="char" id="KeyK">
         <p class="first_key">क</p>
         <p class="second_key">ख</p>
+        <p class="third_key">K</p>
       </li>
       <li class="char" id="KeyL">
         <p class="first_key">त</p>
         <p class="second_key">थ</p>
+        <p class="third_key">L</p>
       </li>
       <li class="char" id="Semicolon">
         <p class="first_key">च</p>
         <p class="second_key">छ</p>
+        <p class="third_key">;</p>
       </li>
       <li id="Quote">
         <p class="first_key">ट</p>
         <p class="second_key">ठ</p>
+        <p class="third_key">'</p>
       </li>
       <li id="Enter" style="width: 92px; font-size: small;">Enter</li>
     </ul>
@@ -163,42 +190,52 @@
       <li class="char" id="KeyZ">
         <p class="first_key">ॆ</p>
         <p class="second_key">ऎ</p>
+        <p class="third_key">Z</p>
       </li>
       <li class="char" id="KeyX">
         <p class="first_key">ं</p>
         <p class="second_key">ँ</p>
+        <p class="third_key">X</p>
       </li>
       <li class="char" id="KeyC">
         <p class="first_key">म</p>
         <p class="second_key">ण</p>
+        <p class="third_key">C</p>
       </li>
       <li class="char" id="KeyV">
         <p class="first_key">न</p>
         <p class="second_key">ऩ</p>
+        <p class="third_key">V</p>
       </li>
       <li class="char" id="KeyB">
         <p class="first_key">व</p>
         <p class="second_key">ऴ</p>
+        <p class="third_key">B</p>
       </li>
       <li class="char" id="KeyN">
         <p class="first_key">ल</p>
         <p class="second_key">ळ</p>
+        <p class="third_key">N</p>
       </li>
       <li class="char" id="KeyM">
         <p class="first_key">स</p>
         <p class="second_key">श</p>
+        <p class="third_key">M</p>
       </li>
       <li id="Comma">
         <p class="first_key">,</p>
         <p class="second_key">ष</p>
+        <p class="third_key">,</p>
       </li>
       <li id="Period">
         <p class="first_key">.</p>
         <p class="second_key">।</p>
+        <p class="third_key">.</p>
       </li>
       <li id="Slash">
         <p class="first_key">य</p>
         <p class="second_key">य़</p>
+        <p class="third_key">/</p>
       </li>
       <li id="ShiftRight" style="width: 122px; font-size: small;">Right Shift</li>
     </ul>
@@ -412,18 +449,21 @@ export default {
 
 #InscriptHinkeyboard ul {
   clear: both;
+  font-size: 18px;
+  font-weight: 550;
 }
 
 #InscriptHinkeyboard ul li {
   float: left;
   margin: 0 5px 5px 0;
   width: 50px;
-  height: 45px;
+  height: 50px;
   line-height: 37px;
   text-align: center;
   background: #fee;
   color: #036;
   border: 1px solid #f9f9f9;
+  box-shadow: 1px 1px 1px -1px black;
 }
 
 #InscriptHinkeyboard ul li span.on {
@@ -448,7 +488,14 @@ export default {
 }
 
 #InscriptHinkeyboard > ul > li > p.second_key {
-  margin-top: -20px;
+  margin-top: -13px;
+  margin-left: 25px;
+}
+
+#InscriptHinkeyboard > ul > li > p.third_key {
+  font-family: sans-serif;
+  font-size: 19px;
+  margin-top: -63px;
   margin-left: 25px;
 }
 </style>

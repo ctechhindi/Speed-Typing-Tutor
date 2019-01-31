@@ -1,4 +1,18 @@
 
+### Releases Version `0.0.4`: Thursday, 31 January 2019
+
+* `UPDATE:` Components: English Typing Keyboard 
+* `UPDATE:` Components: Inscript Hindi Typing Keyboard 
+* `UPDATE:` Components: Kruti Dev Hindi Typing Keyboard 
+* `UPDATE:` Inscript Hindi Test - Passages
+    - `[NEW]: Beginner` Passages 
+    - `Normal` Passages
+    - `Advanced` Passages
+* `INSERT:` Random Words in Inscript Hindi Beginner Passage
+* `INSERT:` Website `Footer` Component
+* `INSERT:` Donation Link
+* `Fix Issue:` Show Error if Current Word Length greater than Type Word Length
+
 ### Releases Version `0.0.3`
 
 * `INSERT:` Auto Update New Version

@@ -2,8 +2,8 @@
 
 To Use Hindi (Inscript, Kruti Dev) and English Typing and Test, Download the Application or use online
 
-[![npm version](https://img.shields.io/badge/npm-5.6.0-blue.svg)](https://github.com/ctechhindi/Speed-Typing-Tutor)
-[![electron version](https://img.shields.io/badge/electron-4.0.0-blue.svg)](https://electronjs.org)
+[![npm version](https://img.shields.io/badge/npm-6.5.0-blue.svg)](https://github.com/ctechhindi/Speed-Typing-Tutor)
+[![electron version](https://img.shields.io/badge/electron-4.0.1-blue.svg)](https://electronjs.org)
 [![Chrome version](https://img.shields.io/badge/chrome-69.0-blue.svg)](https://www.google.com/chrome)
 
 [![GitHub stars](https://img.shields.io/github/stars/ctechhindi/Speed-Typing-Tutor.svg?style=flat-square)](https://github.com/ctechhindi/Speed-Typing-Tutor/stargazers)

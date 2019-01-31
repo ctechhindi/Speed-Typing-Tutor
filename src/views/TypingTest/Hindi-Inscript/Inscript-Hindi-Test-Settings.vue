@@ -15,12 +15,13 @@
         <!-- Lessons Types -->
         <b-field horizontal label="Passage Types">
           <div class="block">
-            <b-radio v-model="selectPassageType" native-value="Basic">Basic</b-radio>
+            <b-radio v-model="selectPassageType" native-value="Beginner">Beginner</b-radio>
+            <b-radio v-model="selectPassageType" native-value="Normal">Normal</b-radio>
             <b-radio v-model="selectPassageType" native-value="Advanced">Advanced</b-radio>
           </div>
         </b-field>
-        <!-- Basic Passage -->
-        <b-field horizontal label="Basic Passage" v-if="selectPassageType === 'Basic'">
+        <!-- Beginner Passage -->
+        <b-field horizontal label="Beginner Passage" v-if="selectPassageType === 'Beginner'">
           <b-select
             placeholder="Select Typing Passage"
             v-model="selectedTypingPassage"
@@ -30,7 +31,24 @@
           >
             <option value="random">Random Typing Passage</option>
             <option
-              v-for="option in listBasicPassages"
+              v-for="option in listBeginnerPassages"
+              :key="option.id"
+              :value="encodeBase64(option.id)"
+            >{{ option.name }} ({{ option.words }} words)</option>
+          </b-select>
+        </b-field>
+        <!-- Normal Passage -->
+        <b-field horizontal label="Normal Passage" v-if="selectPassageType === 'Normal'">
+          <b-select
+            placeholder="Select Typing Passage"
+            v-model="selectedTypingPassage"
+            icon="file-document"
+            expanded
+            required
+          >
+            <option value="random">Random Typing Passage</option>
+            <option
+              v-for="option in listNormalPassages"
               :key="option.id"
               :value="encodeBase64(option.id)"
             >{{ option.name }} ({{ option.words }} words)</option>
@@ -130,8 +148,13 @@ export default {
         this.$store.commit("iht/UP_SELECTED_TYPING_PASSAGE", val);
       }
     },
-    listBasicPassages() {
-      return this.$store.state.iht.listBasicPassages;
+
+    // Beginner, Normal, Advanced Passages
+    listBeginnerPassages() {
+      return this.$store.state.iht.listBeginnerPassages;
+    },
+    listNormalPassages() {
+      return this.$store.state.iht.listNormalPassages;
     },
     listAdvancedPassages() {
       return this.$store.state.iht.listAdvancedPassages;
@@ -190,16 +213,27 @@ export default {
         return false;
       }
 
+      // Beginner, Normal, Advanced Passages
       if (this.selectedTypingPassage === "random") {
-        if (this.selectPassageType === "Basic") {
+        if (this.selectPassageType === "Beginner") {
           var genRandomNum =
             Math.floor(
-              Math.random() * (this.listBasicPassages.length - 1 + 1)
+              Math.random() * (this.listBeginnerPassages.length - 1 + 1)
             ) + 0;
-          var lessonID = this.listBasicPassages[genRandomNum].id;
+          var lessonID = this.listBeginnerPassages[genRandomNum].id;
           this.$router.push({
             name: "typing-test-inscript-hindi",
-            params: { passageType: "basic", id: Base64.encode(lessonID) }
+            params: { passageType: "beginner", id: Base64.encode(lessonID) }
+          });
+        } else if (this.selectPassageType === "Normal") {
+          var genRandomNum =
+            Math.floor(
+              Math.random() * (this.listNormalPassages.length - 1 + 1)
+            ) + 0;
+          var lessonID = this.listNormalPassages[genRandomNum].id;
+          this.$router.push({
+            name: "typing-test-inscript-hindi",
+            params: { passageType: "normal", id: Base64.encode(lessonID) }
           });
         } else {
           // Advanced
@@ -207,22 +241,17 @@ export default {
             Math.floor(
               Math.random() * (this.listAdvancedPassages.length - 1 + 1)
             ) + 0;
-          var lessonID = this.listBasicPassages[genRandomNum].id;
+          var lessonID = this.listAdvancedPassages[genRandomNum].id;
           this.$router.push({
             name: "typing-test-inscript-hindi",
             params: { passageType: "advanced", id: Base64.encode(lessonID) }
           });
         }
       } else {
-        if (this.selectPassageType === "Basic") {
+        if (this.selectPassageType !== "") {
           this.$router.push({
             name: "typing-test-inscript-hindi",
-            params: { passageType: "basic", id: this.selectedTypingPassage }
-          });
-        } else {
-          this.$router.push({
-            name: "typing-test-inscript-hindi",
-            params: { passageType: "advanced", id: this.selectedTypingPassage }
+            params: { passageType: (this.selectPassageType).toLowerCase(), id: this.selectedTypingPassage }
           });
         }
       }

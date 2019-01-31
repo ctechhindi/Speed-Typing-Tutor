@@ -228,7 +228,7 @@ export default {
 /** Typing Content Div */
 #englishWords {
   width: 96.4%;
-  height: 184px;
+  height: 285px;
   overflow-y: scroll;
 }
 

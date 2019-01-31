@@ -15,9 +15,7 @@
         <div class="container">
           <br>
           <div v-show="isAvailableUpdate" class="notification is-warning">
-            <strong
-              style="cursor: pointer;"
-            >A new version available,</strong> download the latest version and your new version will be automatically installed.
+            <strong style="cursor: pointer;">A new version available,</strong> download the latest version and your new version will be automatically installed.
           </div>
         </div>
         <section class="section container is-fullhd">
@@ -90,59 +88,42 @@
         </section>
       </div>
     </section>
-    <footer class="footer">
-      <div class="container">
-        <div class="content has-text-centered has-text-dark">
-          <p>
-            <a style="padding-right: 0.5em" @click="openLink($store.state.app.social.youtube)">
-              <b-icon size="is-large" type="is-primary" icon="youtube-tv"></b-icon>
-            </a>
-            <a style="padding-right: 0.5em" @click="openLink($store.state.app.social.fb)">
-              <b-icon size="is-large" type="is-primary" icon="facebook"></b-icon>
-            </a>
-            <a style="padding-right: 0.5em" @click="openLink($store.state.app.social.instagram)">
-              <b-icon size="is-large" type="is-primary" icon="instagram"></b-icon>
-            </a>
-            <a style="padding-right: 0.5em" @click="openLink($store.state.app.social.github)">
-              <b-icon size="is-large" type="is-primary" icon="github-circle"></b-icon>
-            </a>
-            <a
-              style="padding-right: 0.5em"
-              @click="openLink($store.state.app.social.stackOverflow)"
-            >
-              <b-icon size="is-large" type="is-primary" icon="stack-overflow"></b-icon>
-            </a>
-            <a style="padding-right: 0.5em" @click="openLink($store.state.app.social.twitter)">
-              <b-icon size="is-large" type="is-primary" icon="twitter"></b-icon>
-            </a>
-            <a style="padding-right: 0.5em" @click="openLink($store.state.app.social.googlePlus)">
-              <b-icon size="is-large" type="is-primary" icon="google-plus"></b-icon>
-            </a>
-          </p>
-          <p>
-            Copyrights ©
-            <a
-              @click="openLink($store.state.app.copyrightURL)"
-            >{{ this.$store.state.app.copyright }}</a> 2018 | Made with
-            <b-icon icon="heart" type="is-danger"></b-icon>in India
-          </p>
+    <section class="section">
+      <div class="container has-text-centered">
+        <div class="content">
+          <h3>
+            <strong>Support</strong> Speed Typing Tutor
+          </h3>
+          <p>Please help keep Speed Typing Tutor free, for anyone, anywhere forever.</p>
+          <a
+            @click="openLink('https://www.instamojo.com/@speedtypingtutor')"
+            class="button is-warning is-large"
+          >
+            <b-icon icon="currency-inr"></b-icon>
+            <span>Donation</span>
+          </a>
         </div>
       </div>
-    </footer>
+    </section>
+    <app-footer></app-footer>
   </div>
 </template>
 
 <script>
 const APPP = require("../../package.json"); // Load Package JSON File
 
-import axios from "axios"
+import axios from "axios";
+import Footer from "@/components/Footer.vue";
 
 export default {
   name: "home",
+  components: {
+    "app-footer": Footer
+  },
   data() {
     return {
       // Check Available Update
-      isAvailableUpdate: false,
+      isAvailableUpdate: false
     };
   },
   methods: {
@@ -151,7 +132,7 @@ export default {
      * @param: {url} Link
      */
     openLink(link) {
-      require('electron').shell.openExternal(link)
+      require("electron").shell.openExternal(link);
     },
 
     /**
@@ -197,7 +178,7 @@ export default {
     this.$Progress.finish();
   },
   created() {
-    this.checkUpdate()
+    this.checkUpdate();
   }
 };
 </script>

@@ -152,7 +152,7 @@ function createWindow() {
               type: 'info',
               title: 'Welcome',
               message: APPP.productName + " " + APPP.version,
-              detail: "To Use Hindi (Inscript, Kruti Dev) and English Typing and Test, Download the Application or use online",
+              detail: "To Use Hindi (Inscript, Kruti Dev) and English Typing and Test, Download the Application or use online \n\nFor Feedback & Complaints email to speedtypingtutor@gmail.com",
             }
             dialog.showMessageBox(options)
           }

@@ -4,6 +4,7 @@
       <li id="Backquote" class="krutidev">
         <p class="first_key">`</p>
         <p class="second_key">~</p>
+        <p class="third_key">`</p>
       </li>
       <li id="Digit1" class="krutidev">
         <p class="first_key">1</p>
@@ -48,10 +49,12 @@
       <li id="Minus" class="krutidev">
         <p class="first_key">-</p>
         <p class="second_key">_</p>
+        <p class="third_key">-</p>
       </li>
       <li id="Equal" class="krutidev">
         <p class="first_key">=</p>
         <p class="second_key">+</p>
+        <p class="third_key">=</p>
       </li>
       <li id="Backspace" style="width: 88px; font-size: small;">Backspace</li>
     </ul>
@@ -60,54 +63,67 @@
       <li class="char krutidev" id="KeyQ">
         <p class="first_key">q</p>
         <p class="second_key">Q</p>
+        <p class="third_key">Q</p>
       </li>
       <li class="char krutidev" id="KeyW">
         <p class="first_key">w</p>
         <p class="second_key">W</p>
+        <p class="third_key">W</p>
       </li>
       <li class="char krutidev" id="KeyE">
         <p class="first_key">e</p>
         <p class="second_key">E</p>
+        <p class="third_key">E</p>
       </li>
       <li class="char krutidev" id="KeyR">
         <p class="first_key">r</p>
         <p class="second_key">R</p>
+        <p class="third_key">R</p>
       </li>
       <li class="char krutidev" id="KeyT">
         <p class="first_key">t</p>
         <p class="second_key">T</p>
+        <p class="third_key">T</p>
       </li>
       <li class="char krutidev" id="KeyY">
         <p class="first_key">y</p>
         <p class="second_key">Y</p>
+        <p class="third_key">Y</p>
       </li>
       <li class="char krutidev" id="KeyU">
         <p class="first_key">u</p>
         <p class="second_key">U</p>
+        <p class="third_key">U</p>
       </li>
       <li class="char krutidev" id="KeyI">
         <p class="first_key">i</p>
         <p class="second_key">I</p>
+        <p class="third_key">I</p>
       </li>
       <li class="char krutidev" id="KeyO">
         <p class="first_key">o</p>
         <p class="second_key">O</p>
+        <p class="third_key">O</p>
       </li>
       <li class="char krutidev" id="KeyP">
         <p class="first_key">p</p>
         <p class="second_key">P</p>
+        <p class="third_key">P</p>
       </li>
       <li class="char krutidev" id="BracketLeft">
         <p class="first_key">[</p>
         <p class="second_key">{</p>
+        <p class="third_key">[</p>
       </li>
       <li id="BracketRight" class="krutidev">
         <p class="first_key">]</p>
         <p class="second_key">}</p>
+        <p class="third_key">]</p>
       </li>
       <li id="Backslash" class="krutidev">
         <p class="first_key">\</p>
         <p class="second_key">|</p>
+        <p class="third_key">\</p>
       </li>
     </ul>
     <ul>
@@ -115,46 +131,57 @@
       <li class="char krutidev" id="KeyA">
         <p class="first_key">a</p>
         <p class="second_key">A</p>
+        <p class="third_key">A</p>
       </li>
       <li class="char krutidev" id="KeyS">
         <p class="first_key">s</p>
         <p class="second_key">S</p>
+        <p class="third_key">S</p>
       </li>
       <li class="char krutidev" id="KeyD">
         <p class="first_key">d</p>
         <p class="second_key">D</p>
+        <p class="third_key">D</p>
       </li>
       <li class="char krutidev" id="KeyF">
         <p class="first_key">f</p>
         <p class="second_key">F</p>
+        <p class="third_key">F</p>
       </li>
       <li class="char krutidev" id="KeyG">
         <p class="first_key">g</p>
         <p class="second_key">G</p>
+        <p class="third_key">G</p>
       </li>
       <li class="char krutidev" id="KeyH">
         <p class="first_key">h</p>
         <p class="second_key">H</p>
+        <p class="third_key">H</p>
       </li>
       <li class="char krutidev" id="KeyJ">
         <p class="first_key">j</p>
         <p class="second_key">J</p>
+        <p class="third_key">J</p>
       </li>
       <li class="char krutidev" id="KeyK">
         <p class="first_key">k</p>
         <p class="second_key">K</p>
+        <p class="third_key">K</p>
       </li>
       <li class="char krutidev" id="KeyL">
         <p class="first_key">l</p>
         <p class="second_key">L</p>
+        <p class="third_key">L</p>
       </li>
       <li class="char krutidev" id="Semicolon">
         <p class="first_key">;</p>
         <p class="second_key">:</p>
+        <p class="third_key">;</p>
       </li>
       <li id="Quote" class="krutidev">
         <p class="first_key">'</p>
         <p class="second_key">"</p>
+        <p class="third_key">'</p>
       </li>
       <li id="Enter" style="width: 92px; font-size: small;">Enter</li>
     </ul>
@@ -163,42 +190,52 @@
       <li class="char krutidev" id="KeyZ">
         <p class="first_key">z</p>
         <p class="second_key">Z</p>
+        <p class="third_key">Z</p>
       </li>
       <li class="char krutidev" id="KeyX">
         <p class="first_key">x</p>
         <p class="second_key">X</p>
+        <p class="third_key">X</p>
       </li>
       <li class="char krutidev" id="KeyC">
         <p class="first_key">c</p>
         <p class="second_key">C</p>
+        <p class="third_key">C</p>
       </li>
       <li class="char krutidev" id="KeyV">
         <p class="first_key">v</p>
         <p class="second_key">V</p>
+        <p class="third_key">V</p>
       </li>
       <li class="char krutidev" id="KeyB">
         <p class="first_key">b</p>
         <p class="second_key">B</p>
+        <p class="third_key">B</p>
       </li>
       <li class="char krutidev" id="KeyN">
         <p class="first_key">n</p>
         <p class="second_key">N</p>
+        <p class="third_key">N</p>
       </li>
       <li class="char krutidev" id="KeyM">
         <p class="first_key">m</p>
         <p class="second_key">M</p>
+        <p class="third_key">M</p>
       </li>
       <li id="Comma" class="krutidev">
         <p class="first_key">,</p>
         <p class="second_key">&#60;</p>
+        <p class="third_key">,</p>
       </li>
       <li id="Period" class="krutidev">
         <p class="first_key">.</p>
         <p class="second_key">&#62;</p>
+        <p class="third_key">.</p>
       </li>
       <li id="Slash" class="krutidev">
         <p class="first_key">/</p>
         <p class="second_key">?</p>
+        <p class="third_key">/</p>
       </li>
       <li id="ShiftRight" style="width: 122px; font-size: small;">Right Shift</li>
     </ul>
@@ -420,12 +457,13 @@ export default {
   float: left;
   margin: 0 5px 5px 0;
   width: 50px;
-  height: 45px;
+  height: 50px;
   line-height: 37px;
   text-align: center;
   background: #fee;
   color: #036;
   border: 1px solid #f9f9f9;
+  box-shadow: 1px 1px 1px -1px black;
 }
 
 #kurtiDevkeyboard ul li span.on {
@@ -450,7 +488,14 @@ export default {
 }
 
 #kurtiDevkeyboard > ul > li > p.second_key {
-  margin-top: -20px;
+  margin-top: -12px;
+  margin-left: 25px;
+}
+
+#kurtiDevkeyboard > ul > li > p.third_key {
+  font-family: sans-serif;
+  font-size: 19px;
+  margin-top: -63px;
   margin-left: 25px;
 }
 

@@ -222,7 +222,7 @@ export default {
 /** Typing Content Div */
 #thisClass {
   width: 96.4%;
-  height: 113px;
+  height: 200px;
   overflow-y: scroll;
 }
 
